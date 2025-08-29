@@ -21,7 +21,7 @@ gnome-icon-theme gnome-icon-theme-symbolic gnome-themes-extra at-spi2-core \
 mate-themes papirus-icon-theme \
 dconf-editor dconf-cli \
 thunar xfce4-terminal network-manager-gnome feh jgmenu menu \
-x11-xserver-utils volumeicon-alsa pavucontrol alsa-utils pulseaudio pulseaudio-utils libcanberra-pulse \
+x11-xserver-utils volumeicon-alsa pavucontrol alsa-utils pulseaudio pulseaudio-utils libcanberra-pulse pasystray \
 firefox-esr thunderbird vlc calibre rhythmbox shotwell libreoffice libreoffice-l10n-pl libreoffice-help-pl \
 wxmaxima \
 python3 python3-pip python3-venv \
@@ -48,8 +48,9 @@ tint2 &
 # Aplet sieci
 nm-applet &
 
-# Aplet głośności
-volumeicon &
+# Aplet głośności (PulseAudio)
+pasystray &
+
 
 # Terminal
 #xfce4-terminal &
