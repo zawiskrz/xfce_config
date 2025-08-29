@@ -46,7 +46,6 @@ Ten skrypt automatyzuje instalację lekkiego środowiska graficznego opartego na
 ```bash
 ### 🛠️ Skrypt `install_packages.sh`
 
-```bash
 #!/bin/bash
 
 LOGFILE="install_log.txt"
