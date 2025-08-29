@@ -22,7 +22,8 @@ mate-themes papirus-icon-theme \
 dconf-editor dconf-cli \
 thunar xfce4-terminal network-manager-gnome feh jgmenu menu \
 x11-xserver-utils volumeicon-alsa pavucontrol alsa-utils pulseaudio pulseaudio-utils libcanberra-pulse \
-firefox-esr thunderbird vlc calibre showtell rhythmbox libreoffice wxmaxima \
+firefox-esr thunderbird vlc calibre rhythmbox shotwell libreoffice libreoffice-l10n-pl libreoffice-help-pl \
+wxmaxima \
 python3 python3-pip python3-venv \
 mc htop 2>&1 | tee -a "$LOGFILE"
 
