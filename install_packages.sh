@@ -7,6 +7,7 @@ sudo apt update
 
 echo "📦 Instalacja pakietów..."
 sudo apt install -y \
+mc htop \
 xorg lightdm lightdm-gtk-greeter \
 openbox obconf lxappearance xdg-utils python3-xdg \
 upower dmz-cursor-theme \
@@ -25,7 +26,7 @@ echo "🔄 Restart LightDM..."
 sudo systemctl restart lightdm
 
 echo "🚀 Uruchamianie komponentów Openbox..."
-feh --bg-scale /ścieżka/do/tapety.jpg &
+#feh --bg-scale /ścieżka/do/tapety.jpg &
 tint2 &
 nm-applet &
 xfce4-terminal &
