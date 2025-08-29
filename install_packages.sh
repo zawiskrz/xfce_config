@@ -1,6 +1,6 @@
 #!/bin/sh
 sudo apt update
-sudo apt install \
+sudo apt install -y \
 mc htop \
 xorg lightdm lightdm-gtk-greeter \
 openbox obconf lxappearance xdg-utils python3-xdg \
