@@ -50,9 +50,8 @@ tint2 &
 # Aplet sieci
 nm-applet &
 
-# Aplet głośności (PulseAudio)
-pasystray &
-
+# Menedżer Bluetooth
+blueman-applet &
 
 # Terminal
 #xfce4-terminal &
