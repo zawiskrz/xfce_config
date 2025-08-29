@@ -6,6 +6,7 @@ echo "🔧 Aktualizacja pakietów..." | tee -a "$LOGFILE"
 sudo apt update 2>&1 | tee -a "$LOGFILE"
 
 echo "📦 Instalacja środowiska Openbox..." | tee -a "$LOGFILE"
+
 sudo apt install -y \
 xorg lightdm lightdm-gtk-greeter \
 openbox obconf lxappearance xdg-utils python3-xdg \
@@ -20,7 +21,9 @@ gnome-icon-theme gnome-icon-theme-symbolic gnome-themes-extra at-spi2-core \
 mate-themes papirus-icon-theme \
 dconf-editor dconf-cli \
 thunar xfce4-terminal network-manager-gnome feh jgmenu menu \
-x11-xserver-utils \
+x11-xserver-utils volumeicon-alsa pavucontrol alsa-utils pulseaudio pulseaudio-utils libcanberra-pulse \
+firefox-esr thunderbird vlc calibre showtell rhythmbox libreoffice wxmaxima \
+python3 python3-pip python3-venv \
 mc htop 2>&1 | tee -a "$LOGFILE"
 
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
@@ -31,13 +34,30 @@ mkdir -p ~/.config/openbox 2>> "$LOGFILE"
 
 cat <<EOF > ~/.config/openbox/autostart
 # Automatyczne uruchamianie komponentów pulpitu
+
+# Ustawienie tapety
 # feh --bg-scale /ścieżka/do/tapety.jpg &
+
+# Ustawienie rozdzielczości HD 
 xrandr --output Virtual-1  --mode 1920x1080 --rate 60 &
+
+# Panel
 tint2 &
+
+# Aplet sieci
 nm-applet &
-# xfce4-terminal &
+
+# Aplet głośności
+volumeicon &
+
+# Terminal
+#xfce4-terminal &
+
+# Kompozytor okien
 compton &
-# conky &
+
+# Monitor systemu
+#conky &
 EOF
 
 echo "✅ Plik autostartu utworzony w ~/.config/openbox/autostart" | tee -a "$LOGFILE"
