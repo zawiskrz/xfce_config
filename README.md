@@ -44,12 +44,17 @@ Ten skrypt automatyzuje instalację lekkiego środowiska graficznego opartego na
 ## 🛠️ Skrypt `install_packages.sh`
 
 ```bash
+### 🛠️ Skrypt `install_packages.sh`
+
+```bash
 #!/bin/bash
 
-# 🔧 Aktualizacja repozytoriów
-sudo apt update
+LOGFILE="install_log.txt"
 
-# 📦 Instalacja pakietów
+echo "🔧 Aktualizacja pakietów..." | tee -a "$LOGFILE"
+sudo apt update 2>&1 | tee -a "$LOGFILE"
+
+echo "📦 Instalacja środowiska Openbox..." | tee -a "$LOGFILE"
 sudo apt install -y \
 xorg lightdm lightdm-gtk-greeter \
 openbox obconf lxappearance xdg-utils python3-xdg \
@@ -63,13 +68,14 @@ gtk2-engines gtk2-engines-murrine gtk2-engines-pixbuf murrine-themes libgtk2.0-b
 gnome-icon-theme gnome-icon-theme-symbolic gnome-themes-extra at-spi2-core \
 mate-themes papirus-icon-theme \
 dconf-editor dconf-cli \
-thunar xfce4-terminal network-manager-gnome feh jgmenu menu
+thunar xfce4-terminal network-manager-gnome feh jgmenu menu \
+mc htop 2>&1 | tee -a "$LOGFILE"
 
-# 🔄 Restart menedżera logowania
-sudo systemctl restart lightdm
+echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
+sudo systemctl restart lightdm 2>&1 | tee -a "$LOGFILE"
 
-# 🚀 Uruchomienie komponentów pulpitu
-feh --bg-scale /ścieżka/do/tapety.jpg &
-tint2 &
-nm-applet &
-xfce4-terminal &
+echo "🚀 Uruchamianie komponentów Openbox..." | tee -a "$LOGFILE"
+feh --bg-scale /ścieżka/do/tapety.jpg &>> "$LOGFILE"
+tint2 &>> "$LOGFILE"
+nm-applet &>> "$LOGFILE"
+xfce4-terminal &>> "$LOGFILE"
