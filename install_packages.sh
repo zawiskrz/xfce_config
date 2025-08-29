@@ -23,7 +23,7 @@ dconf-editor dconf-cli \
 thunar xfce4-terminal network-manager-gnome feh jgmenu menu \
 x11-xserver-utils \
 pulseaudio pulseaudio-utils pulseaudio-module-bluetooth pavucontrol libcanberra-pulse pasystray \
-bluez blueman \
+bluez blueman xfce4-power-manager \
 firefox-esr thunderbird vlc calibre rhythmbox shotwell libreoffice libreoffice-l10n-pl libreoffice-help-pl \
 wxmaxima \
 python3 python3-pip python3-venv \
@@ -61,6 +61,9 @@ compton &
 
 # Monitor systemu
 #conky &
+
+#Manadzer zasilania
+xfce4-power-manager &
 EOF
 
 echo "✅ Plik autostartu utworzony w ~/.config/openbox/autostart" | tee -a "$LOGFILE"
