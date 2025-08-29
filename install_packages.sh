@@ -20,6 +20,7 @@ gnome-icon-theme gnome-icon-theme-symbolic gnome-themes-extra at-spi2-core \
 mate-themes papirus-icon-theme \
 dconf-editor dconf-cli \
 thunar xfce4-terminal network-manager-gnome feh jgmenu menu \
+x11-xserver-utils \
 mc htop 2>&1 | tee -a "$LOGFILE"
 
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
@@ -27,10 +28,11 @@ sudo systemctl restart lightdm 2>&1 | tee -a "$LOGFILE"
 
 echo "🗂️ Tworzenie pliku autostartu Openbox..." | tee -a "$LOGFILE"
 mkdir -p ~/.config/openbox 2>> "$LOGFILE"
-
+xrandr --output x11-xserver-utils  --mode 1920x1080 --rate 60 &
 cat <<EOF > ~/.config/openbox/autostart
 # Automatyczne uruchamianie komponentów pulpitu
 # feh --bg-scale /ścieżka/do/tapety.jpg &
+
 tint2 &
 nm-applet &
 xfce4-terminal &
