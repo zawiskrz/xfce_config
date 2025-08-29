@@ -26,7 +26,7 @@ echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
 sudo systemctl restart lightdm 2>&1 | tee -a "$LOGFILE"
 
 echo "🚀 Uruchamianie komponentów Openbox..." | tee -a "$LOGFILE"
-feh --bg-scale /ścieżka/do/tapety.jpg &>> "$LOGFILE"
+#feh --bg-scale /ścieżka/do/tapety.jpg &>> "$LOGFILE"
 tint2 &>> "$LOGFILE"
 nm-applet &>> "$LOGFILE"
 xfce4-terminal &>> "$LOGFILE"
