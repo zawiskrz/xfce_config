@@ -28,11 +28,11 @@ sudo systemctl restart lightdm 2>&1 | tee -a "$LOGFILE"
 
 echo "🗂️ Tworzenie pliku autostartu Openbox..." | tee -a "$LOGFILE"
 mkdir -p ~/.config/openbox 2>> "$LOGFILE"
-xrandr --output Virtual-1  --mode 1920x1080 --rate 60 &
+
 cat <<EOF > ~/.config/openbox/autostart
 # Automatyczne uruchamianie komponentów pulpitu
 # feh --bg-scale /ścieżka/do/tapety.jpg &
-
+xrandr --output Virtual-1  --mode 1920x1080 --rate 60 &
 tint2 &
 nm-applet &
 xfce4-terminal &
