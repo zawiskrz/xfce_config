@@ -35,9 +35,9 @@ cat <<EOF > ~/.config/openbox/autostart
 xrandr --output Virtual-1  --mode 1920x1080 --rate 60 &
 tint2 &
 nm-applet &
-xfce4-terminal &
+# xfce4-terminal &
 compton &
-conky &
+# conky &
 EOF
 
 echo "✅ Plik autostartu utworzony w ~/.config/openbox/autostart" | tee -a "$LOGFILE"
