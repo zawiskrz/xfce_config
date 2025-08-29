@@ -25,8 +25,17 @@ mc htop 2>&1 | tee -a "$LOGFILE"
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
 sudo systemctl restart lightdm 2>&1 | tee -a "$LOGFILE"
 
-echo "🚀 Uruchamianie komponentów Openbox..." | tee -a "$LOGFILE"
-#feh --bg-scale /ścieżka/do/tapety.jpg &>> "$LOGFILE"
-tint2 &>> "$LOGFILE"
-nm-applet &>> "$LOGFILE"
-xfce4-terminal &>> "$LOGFILE"
+echo "🗂️ Tworzenie pliku autostartu Openbox..." | tee -a "$LOGFILE"
+mkdir -p ~/.config/openbox 2>> "$LOGFILE"
+
+cat <<EOF > ~/.config/openbox/autostart
+# Automatyczne uruchamianie komponentów pulpitu
+# feh --bg-scale /ścieżka/do/tapety.jpg &
+tint2 &
+nm-applet &
+xfce4-terminal &
+compton &
+conky &
+EOF
+
+echo "✅ Plik autostartu utworzony w ~/.config/openbox/autostart" | tee -a "$LOGFILE"
