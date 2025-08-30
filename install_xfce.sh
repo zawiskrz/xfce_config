@@ -1,6 +1,8 @@
 #!/bin/bash
 
 LOGFILE="install_log.txt"
+PYCHARM_VERSION="2025.1"
+PYCHARM_DIR="/opt/pycharm"
 
 echo "🔧 Aktualizacja pakietów..." | tee -a "$LOGFILE"
 sudo apt update 2>&1 | tee -a "$LOGFILE"
@@ -14,7 +16,7 @@ pulseaudio pulseaudio-utils pulseaudio-module-bluetooth pavucontrol libcanberra-
 firefox-esr thunderbird vlc calibre rhythmbox shotwell \
 libreoffice libreoffice-l10n-pl libreoffice-help-pl \
 wxmaxima python3 python3-pip python3-venv \
-mc htop x11-xserver-utils papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
+mc htop x11-xserver-utils papirus-icon-theme wget 2>&1 | tee -a "$LOGFILE"
 
 echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
 install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
@@ -40,7 +42,23 @@ done
 sudo ufw --force enable
 echo "✅ Zapora UFW aktywna." | tee -a "$LOGFILE"
 
+echo "🐍 Instalacja PyCharma Community ${PYCHARM_VERSION}..." | tee -a "$LOGFILE"
+wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSION}.tar.gz -O pycharm.tar.gz 2>&1 | tee -a "$LOGFILE"
+tar -xzf pycharm.tar.gz 2>&1 | tee -a "$LOGFILE"
+sudo mv pycharm-community-${PYCHARM_VERSION} "$PYCHARM_DIR"
+
+echo "🖥️ Tworzenie skrótu do PyCharma..." | tee -a "$LOGFILE"
+cat <<EOF | sudo tee /usr/share/applications/pycharm.desktop
+[Desktop Entry]
+Name=PyCharm Community
+Exec=${PYCHARM_DIR}/bin/pycharm.sh
+Icon=${PYCHARM_DIR}/bin/pycharm.png
+Type=Application
+Categories=Development;IDE;
+EOF
+
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
 sudo systemctl restart lightdm
 
-echo "✅ Instalacja zakończona. Środowisko XFCE zostało skonfigurowane." | tee -a "$LOGFILE"
+echo "✅ Instalacja zakończona. XFCE i PyCharm są gotowe do użycia." | tee -a "$LOGFILE"
+
