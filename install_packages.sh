@@ -72,11 +72,10 @@ echo "✅ Plik autostartu utworzony w ~/.config/openbox/autostart" | tee -a "$LO
 
 echo "🖼️ Kopiowanie katalogu 'tapety' i ustawianie tapety pulpitu..." | tee -a "$LOGFILE"
 
-# Sprawdzenie, czy katalog istnieje
-if [ -d "./tapety" ] && [ -f "./tapety/planety.jpg" ]; then
-    cp -r ./tapety ~/tapety 2>> "$LOGFILE"
-    nitrogen --set-scaled ~/tapety/planety.jpg --save 2>> "$LOGFILE"
-    echo "✅ Tapeta 'planety.jpg' ustawiona jako tło pulpitu (tryb: scaled)" | tee -a "$LOGFILE"
-else
-    echo "⚠️ Katalog './tapety' lub plik 'planety.jpg' nie istnieje. Pominięto ustawienie tapety." | tee -a "$LOGFILE"
-fi
+# 📁 Kopiowanie katalogu 'tapety' do katalogu domowego
+cp -R ./tapety "$HOME" 2>> "$LOGFILE"
+
+# 🖼️ Ustawienie tapety 'planety.jpg' jako tła pulpitu
+nitrogen --set-scaled "$HOME/tapety/planety.jpg" --save 2>> "$LOGFILE"
+echo "✅ Tapeta 'planety.jpg' ustawiona jako tło pulpitu (tryb: scaled)" | tee -a "$LOGFILE"
+
