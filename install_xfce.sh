@@ -60,6 +60,38 @@ echo "🖼️ Ustawianie tapety pulpitu (XFCE)..." | tee -a "$LOGFILE"
 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -s ~/tapety/planety.jpg
 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-style -s 3
 
+echo "📡 Instalacja serwera Samba..." | tee -a "$LOGFILE"
+sudo apt install -y samba 2>&1 | tee -a "$LOGFILE"
+
+echo "📁 Tworzenie katalogów do udostępnienia..." | tee -a "$LOGFILE"
+mkdir -p ~/Obrazy ~/Wideo
+chmod 777 ~/Obrazy ~/Wideo
+
+echo "🛠️ Konfiguracja Samby..." | tee -a "$LOGFILE"
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
+cat <<EOF | sudo tee -a /etc/samba/smb.conf
+
+[Obrazy]
+   path = /home/$USER/Obrazy
+   browseable = yes
+   writable = yes
+   guest ok = yes
+   create mask = 0777
+   directory mask = 0777
+
+[Wideo]
+   path = /home/$USER/Wideo
+   browseable = yes
+   writable = yes
+   guest ok = yes
+   create mask = 0777
+   directory mask = 0777
+EOF
+
+echo "🔁 Restartowanie Samby..." | tee -a "$LOGFILE"
+sudo systemctl restart smbd
+
 echo "🛡️ Konfiguracja zapory UFW..." | tee -a "$LOGFILE"
 sudo ufw --force reset
 sudo ufw default deny incoming
