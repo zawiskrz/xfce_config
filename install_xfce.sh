@@ -109,33 +109,28 @@ fi
 if [[ "$ONEAPI" == "true" ]]; then
   echo "🧠 Instalacja Intel oneAPI z repozytorium APT..." | tee -a "$LOGFILE"
 
-  # Dodanie klucza GPG Intel
-  curl -fsSL https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | \
-    gpg --dearmor | sudo tee /usr/share/keyrings/intel-sw-products.gpg > /dev/null
-
-  # Dodanie repozytorium Intel oneAPI
-  echo "deb [signed-by=/usr/share/keyrings/intel-sw-products.gpg] https://apt.repos.intel.com/oneapi all main" | \
-    sudo tee /etc/apt/sources.list.d/intel-oneapi.list > /dev/null
-
-  # Wymuszenie użycia klasycznego GPG (obejście dla Sequoia)
+  # Wymuszenie klasycznego GPG
   echo 'Binary::apt::Acquire::GPGV::Options "--use-legacy-gpg";' | \
     sudo tee /etc/apt/apt.conf.d/99legacy-gpg > /dev/null
 
-  # Aktualizacja listy pakietów
-  sudo apt update | tee -a "$LOGFILE"
+  # Dodanie klucza Intel
+  curl -fsSL https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | \
+    gpg --dearmor | sudo tee /usr/share/keyrings/intel-sw-products.gpg > /dev/null
 
-  # Instalacja wybranych komponentów oneAPI
+  # Dodanie repozytorium Intel
+  echo "deb [signed-by=/usr/share/keyrings/intel-sw-products.gpg] https://apt.repos.intel.com/oneapi all main" | \
+    sudo tee /etc/apt/sources.list.d/intel-oneapi.list > /dev/null
+
+  # Aktualizacja i instalacja
+  sudo apt update | tee -a "$LOGFILE"
   sudo apt install -y intel-basekit intel-oneapi-runtime-opencl clinfo opencl-headers | tee -a "$LOGFILE"
 
-  # Dodanie ścieżki do środowiska
+  # Dodanie do .bashrc
   if ! grep -q "setvars.sh" ~/.bashrc; then
     echo 'source /opt/intel/oneapi/setvars.sh' >> ~/.bashrc
     echo "✅ Dodano source do ~/.bashrc" | tee -a "$LOGFILE"
-  else
-    echo "ℹ️ Ścieżka oneAPI już istnieje w ~/.bashrc" | tee -a "$LOGFILE"
   fi
 
-  # Załadowanie środowiska w bieżącej sesji
   source /opt/intel/oneapi/setvars.sh
 fi
 
