@@ -80,10 +80,6 @@ if [[ "$XFCE" == "true" ]]; then
   cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
   cp -f tapety/* ~/tapety/
 
-  echo "🖼️ Ustawianie tapety pulpitu (XFCE)..." | tee -a "$LOGFILE"
-  MONITOR=$(xfconf-query -c xfce4-desktop -l | grep last-image | head -n1 | cut -d'/' -f4)
-  xfconf-query -c xfce4-desktop -p /backdrop/screen0/$MONITOR/workspace0/last-image -s "$HOME/tapety/planety.jpg"
-  xfconf-query -c xfce4-desktop -p /backdrop/screen0/$MONITOR/workspace0/image-style -s 3
 
 fi
 
