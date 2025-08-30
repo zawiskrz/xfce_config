@@ -72,7 +72,8 @@ if [[ "$XFCE" == "true" ]]; then
   sudo update-locale LANG=pl_PL.UTF-8
   sudo localectl set-locale LANG=pl_PL.UTF-8
   sudo localectl set-keymap pl
-  sudo localectl set-x11-keymap pl pc105
+  sudo localectl set-x11-keymap pl pc105 legacy
+
 
   echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
   install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
