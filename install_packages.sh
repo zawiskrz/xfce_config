@@ -16,7 +16,7 @@ compton \
 tint2 papirus-icon-theme \
 network-manager-gnome \
 pulseaudio pulseaudio-utils pulseaudio-module-bluetooth pavucontrol libcanberra-pulse pasystray \
-bluez blueman xfce4-power-manager \
+bluez blueman xfce4-power-manager xfce4-appfinder \
 thunar thunar-volman gvfs udisks2 xfce4-terminal \
 firefox-esr thunderbird vlc calibre rhythmbox shotwell \
 libreoffice libreoffice-l10n-pl libreoffice-help-pl \
