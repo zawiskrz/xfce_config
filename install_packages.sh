@@ -22,7 +22,7 @@ firefox-esr thunderbird vlc calibre rhythmbox shotwell \
 libreoffice libreoffice-l10n-pl libreoffice-help-pl \
 wxmaxima \
 python3 python3-pip python3-venv \
-mc htop \
+mc htop tree \
 x11-xserver-utils 2>&1 | tee -a "$LOGFILE"
 
 
