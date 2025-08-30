@@ -69,3 +69,14 @@ xfce4-power-manager &
 EOF
 
 echo "✅ Plik autostartu utworzony w ~/.config/openbox/autostart" | tee -a "$LOGFILE"
+
+echo "🖼️ Kopiowanie katalogu 'tapety' i ustawianie tapety pulpitu..." | tee -a "$LOGFILE"
+
+# Sprawdzenie, czy katalog istnieje
+if [ -d "./tapety" ] && [ -f "./tapety/planety.jpg" ]; then
+    cp -r ./tapety ~/tapety 2>> "$LOGFILE"
+    nitrogen --set-scaled ~/tapety/planety.jpg --save 2>> "$LOGFILE"
+    echo "✅ Tapeta 'planety.jpg' ustawiona jako tło pulpitu (tryb: scaled)" | tee -a "$LOGFILE"
+else
+    echo "⚠️ Katalog './tapety' lub plik 'planety.jpg' nie istnieje. Pominięto ustawienie tapety." | tee -a "$LOGFILE"
+fi
