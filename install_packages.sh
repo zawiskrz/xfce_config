@@ -8,6 +8,7 @@ sudo apt update 2>&1 | tee -a "$LOGFILE"
 echo "📦 Instalacja środowiska Openbox..." | tee -a "$LOGFILE"
 
 sudo apt install -y \
+openssh-server  \
 xorg lightdm lightdm-gtk-greeter \
 openbox obconf lxappearance xdg-utils python3-xdg \
 upower dmz-cursor-theme \
