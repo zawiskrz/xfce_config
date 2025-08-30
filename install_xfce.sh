@@ -68,7 +68,7 @@ if [[ "$XFCE" == "true" ]]; then
 
   echo "🔊 Konfiguracja globalnego autostartu PulseAudio..." | tee -a "$LOGFILE"
   sudo mkdir -p /etc/xdg/autostart
-  sudo tee /etc/xdg/autostart/pulseaudio.desktop > /dev/null <<EOF
+  sudo bash -c 'cat > /etc/xdg/autostart/pulseaudio.desktop <<EOF
     [Desktop Entry]
     Type=Application
     Exec=pulseaudio --start
@@ -77,7 +77,7 @@ if [[ "$XFCE" == "true" ]]; then
     X-GNOME-Autostart-enabled=true
     Name=PulseAudio
     Comment=Start PulseAudio sound server
-    EOF
+    EOF'
 
   echo "🌍 Ustawianie języka polskiego i klawiatury..." | tee -a "$LOGFILE"
   sudo sed -i 's/^# pl_PL.UTF-8 UTF-8/pl_PL.UTF-8 UTF-8/' /etc/locale.gen
