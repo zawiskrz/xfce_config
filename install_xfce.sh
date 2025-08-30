@@ -108,7 +108,7 @@ fi
 
 if [[ "$ONEAPI" == "true" ]]; then
   echo "🧠 Instalacja Intel oneAPI..." | tee -a "$LOGFILE"
-  wget "$ONEAPI_URL" -O "$ONEAPI_INSTALLER" 2>&1 | tee -a "$LOGFILE"
+  wget --header="User-Agent: Mozilla/5.0" "$ONEAPI_URL" -O "$ONEAPI_INSTALLER" 2>&1 | tee -a "$LOGFILE"
   chmod +x "$ONEAPI_INSTALLER"
   sudo ./"$ONEAPI_INSTALLER" --silent --eula accept 2>&1 | tee -a "$LOGFILE"
   echo 'source /opt/intel/oneapi/setvars.sh' >> ~/.bashrc
