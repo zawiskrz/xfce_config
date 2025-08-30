@@ -11,7 +11,7 @@ sudo apt update 2>&1 | tee -a "$LOGFILE"
 
 echo "📦 Instalacja środowiska graficznego XFCE..." | tee -a "$LOGFILE"
 sudo apt install -y \
-task-xfce-desktop \
+task-xfce-desktop menulibre \
 openssh-server ufw \
 network-manager-gnome bluez blueman \
 pulseaudio pulseaudio-utils pulseaudio-module-bluetooth pavucontrol libcanberra-pulse \
