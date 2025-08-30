@@ -55,13 +55,17 @@ if [[ "$XFCE" == "true" ]]; then
   echo "📦 Instalacja XFCE i konfiguracja języka..." | tee -a "$LOGFILE"
   sudo apt install -y \
     task-xfce-desktop menulibre \
-    bluez pulseaudio-module-bluetooth \
+    bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
     keyboard-configuration console-setup locales \
     task-polish-desktop \
     thunderbird vlc calibre rhythmbox shotwell \
     libreoffice-l10n-pl libreoffice-help-pl \
     wxmaxima python3 python3-pip python3-venv \
     mc htop wget curl gdebi-core openssh-server ufw papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
+
+  sudo systemctl enable bluetooth
+  sudo systemctl start bluetooth
+  sudo rfkill unblock bluetooth
 
   echo "🌍 Ustawianie języka polskiego i klawiatury..." | tee -a "$LOGFILE"
   sudo sed -i 's/^# pl_PL.UTF-8 UTF-8/pl_PL.UTF-8 UTF-8/' /etc/locale.gen
