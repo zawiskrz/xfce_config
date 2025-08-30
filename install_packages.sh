@@ -29,48 +29,37 @@ x11-xserver-utils 2>&1 | tee -a "$LOGFILE"
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
 sudo systemctl restart lightdm 2>&1 | tee -a "$LOGFILE"
 
-echo "🗂️ Tworzenie pliku autostartu Openbox..." | tee -a "$LOGFILE"
-mkdir -p ~/.config/openbox 2>> "$LOGFILE"
+echo "🗂️ Nadpisywanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
 
-cat <<EOF > ~/.config/openbox/autostart
-# Automatyczne uruchamianie komponentów pulpitu
+# Openbox
+mkdir -p ~/.config/openbox
+cp -f config/openbox/* ~/.config/openbox/
 
-# Ustawienie tapety
-# feh --bg-scale /ścieżka/do/tapety.jpg &
+# Tint2
+mkdir -p ~/.config/tint2
+cp -f config/tint2/* ~/.config/tint2/
 
-# Ustawienie rozdzielczości HD 
-xrandr --output Virtual-1  --mode 1920x1080 --rate 60 &
+# JGMenu
+mkdir -p ~/.config/jgmenu
+cp -f config/jgmenu/* ~/.config/jgmenu/
 
-# Panel
-tint2 &
+# GTK 3.0
+mkdir -p ~/.config/gtk-3.0
+cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
 
-# Aplet sieci
-nm-applet &
+# Rhythmbox (lokalne dane)
+mkdir -p ~/.local/share/rhythmbox
+cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
 
-# Menedżer Bluetooth
-blueman-applet &
+echo "🖼️ Kopiowanie tapet..." | tee -a "$LOGFILE"
+mkdir -p ~/tapety
+cp -f tapety/* ~/tapety/
 
-# Terminal
-#xfce4-terminal &
+echo "🖼️ Ustawianie tapety pulpitu..." | tee -a "$LOGFILE"
+nitrogen --set-scaled ~/tapety/planety.jpg --save
 
-# Kompozytor okien
-compton &
+echo "🔄 Restart LightDM (opcjonalny)..." | tee -a "$LOGFILE"
+# sudo systemctl restart lightdm
 
-# Monitor systemu
-#conky &
-
-#Manadzer zasilania
-xfce4-power-manager &
-EOF
-
-echo "✅ Plik autostartu utworzony w ~/.config/openbox/autostart" | tee -a "$LOGFILE"
-
-echo "🖼️ Kopiowanie katalogu 'tapety' i ustawianie tapety pulpitu..." | tee -a "$LOGFILE"
-
-# 📁 Kopiowanie katalogu 'tapety' do katalogu domowego
-cp -R ./tapety "$HOME" 2>> "$LOGFILE"
-
-# 🖼️ Ustawienie tapety 'planety.jpg' jako tła pulpitu
-nitrogen --set-scaled "$HOME/tapety/planety.jpg" --save 2>> "$LOGFILE"
-echo "✅ Tapeta 'planety.jpg' ustawiona jako tło pulpitu (tryb: scaled)" | tee -a "$LOGFILE"
+echo "✅ Instalacja zakończona. Środowisko Openbox zostało skonfigurowane." 
 
