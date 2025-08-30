@@ -1,38 +1,27 @@
 # Automatyczne uruchamianie komponentów pulpitu
-# Ustawienie tapety
-# feh --bg-scale /ścieżka/do/tapety.jpg &
 
-
-# Ustawienie rozdzielczości HD 
-xrandr --output Virtual-1  --mode 1920x1080 --rate 60 &
+# Ustawienie rozdzielczości HD
+xfsettingsd &
 
 # Ustawienie tapety
 nitrogen --restore &
 
-# Panel
-tint2 &
+# Panel XFCE z pluginami
+xfce4-panel &
 
 # Aplet sieci
 nm-applet &
 
-# Aplet głośności (PulseAudio)
-#pasystray &
-
-
 # Menedżer Bluetooth
 blueman-applet &
-
-# Terminal
-#xfce4-terminal &
 
 # Kompozytor okien
 compton &
 
-# Monitor systemu
-#conky &
-
-
-# Menedżer zasilania z wymuszeniem ikony
+# Menedżer zasilania z ikoną
 xfce4-power-manager --no-daemon &
+
+# Powiadomienia systemowe
+xfce4-notifyd &
 
 
