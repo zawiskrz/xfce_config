@@ -11,6 +11,7 @@ sudo apt install -y \
 openssh-server  \
 xorg lightdm lightdm-gtk-greeter \
 openbox obconf lxappearance xdg-utils python3-xdg \
+nitrogen \
 upower dmz-cursor-theme \
 compton conky-all \
 rxvt-unicode tmux pkexec \
