@@ -19,7 +19,7 @@ firefox-esr thunderbird vlc calibre rhythmbox shotwell \
 libreoffice libreoffice-l10n-pl libreoffice-help-pl \
 wxmaxima python3 python3-pip python3-venv \
 r-base r-base-dev r-recommended \
-mc htop x11-xserver-utils papirus-icon-theme wget curl gdebi-core software-properties-common 2>&1 | tee -a "$LOGFILE"
+mc htop x11-xserver-utils papirus-icon-theme wget curl gdebi-core 2>&1 | tee -a "$LOGFILE"
 
 echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
 install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
