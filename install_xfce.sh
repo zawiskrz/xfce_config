@@ -126,11 +126,26 @@ EOF
 fi
 
 if [[ "$RSTUDIO" == "true" ]]; then
-  echo "🧪 Instalacja RStudio..." | tee -a "$LOGFILE"
-  sudo apt install -y r-base r-base-dev r-recommended gdebi-core 2>&1 | tee -a "$LOGFILE"
+  echo "🧪 Instalacja R 4.4.0 i RStudio..." | tee -a "$LOGFILE"
+
+  # Dodanie repozytorium CRAN dla Debiana 13
+  sudo apt install -y dirmngr gnupg ca-certificates 2>&1 | tee -a "$LOGFILE"
+  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' 2>&1 | tee -a "$LOGFILE"
+  echo "deb https://cloud.r-project.org/bin/linux/debian trixie-cran40/" | sudo tee /etc/apt/sources.list.d/cran.list
+  sudo apt update 2>&1 | tee -a "$LOGFILE"
+
+  # Instalacja R 4.4.0 i zależności
+  sudo apt install -y r-base r-base-dev gdebi-core libclang-dev libssl-dev 2>&1 | tee -a "$LOGFILE"
+
+  # Pobranie i instalacja RStudio
   wget "$RSTUDIO_URL" -O rstudio.deb 2>&1 | tee -a "$LOGFILE"
   sudo gdebi -n rstudio.deb 2>&1 | tee -a "$LOGFILE"
+
+  # Weryfikacja wersji R
+  echo "📋 Zainstalowana wersja R:" | tee -a "$LOGFILE"
+  R --version | tee -a "$LOGFILE"
 fi
+
 
 if [[ "$SAMBA" == "true" ]]; then
   echo "📡 Instalacja Samby z autoryzacją..." | tee -a "$LOGFILE"
