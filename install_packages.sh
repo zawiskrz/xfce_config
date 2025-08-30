@@ -6,6 +6,25 @@ echo "🔧 Aktualizacja pakietów..." | tee -a "$LOGFILE"
 sudo apt update 2>&1 | tee -a "$LOGFILE"
 
 echo "📦 Instalacja środowiska Openbox..." | tee -a "$LOGFILE"
+sudo apt install -y \
+openssh-server  \
+xorg lightdm lightdm-gtk-greeter \
+openbox obconf lxappearance xdg-utils python3-xdg \
+nitrogen \
+jgmenu menu \
+upower dmz-cursor-theme \
+compton \
+tint2 papirus-icon-theme \
+network-manager-gnome \
+pulseaudio pulseaudio-utils pulseaudio-module-bluetooth pavucontrol libcanberra-pulse pasystray \
+bluez blueman xfce4-power-manager \
+thunar thunar-volman gvfs udisks2 xfce4-terminal \
+firefox-esr thunderbird vlc calibre rhythmbox shotwell \
+libreoffice libreoffice-l10n-pl libreoffice-help-pl \
+wxmaxima \
+python3 python3-pip python3-venv \
+mc htop \
+x11-xserver-utils 2>&1 | tee -a "$LOGFILE"
 
 sudo apt install -y \
 openssh-server  \
