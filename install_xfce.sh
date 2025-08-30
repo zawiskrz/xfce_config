@@ -8,6 +8,8 @@ PLAYONLINUX_URL="https://www.playonlinux.com/script_files/PlayOnLinux/4.3.4/Play
 CUDA_KEYRING_URL="https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb"
 ONEAPI_INSTALLER="l_BaseKit_p_2025.1.0.495_offline.sh"
 ONEAPI_URL="https://registrationcenter-download.intel.com/akdlm/irc_nas/19184/${ONEAPI_INSTALLER}"
+SAMBA_USER="smbuser"
+SAMBA_PASS="smbuser"
 
 echo "🔧 Aktualizacja pakietów..." | tee -a "$LOGFILE"
 sudo apt update 2>&1 | tee -a "$LOGFILE"
@@ -15,7 +17,7 @@ sudo apt update 2>&1 | tee -a "$LOGFILE"
 echo "📦 Instalacja środowiska graficznego XFCE..." | tee -a "$LOGFILE"
 sudo apt install -y \
 task-xfce-desktop menulibre \
-openssh-server ufw \
+openssh-server ufw samba \
 network-manager-gnome bluez blueman \
 pulseaudio pulseaudio-utils pulseaudio-module-bluetooth pavucontrol libcanberra-pulse \
 firefox-esr thunderbird vlc calibre rhythmbox shotwell \
@@ -50,43 +52,37 @@ chmod +x "$ONEAPI_INSTALLER"
 sudo ./"$ONEAPI_INSTALLER" --silent --eula accept 2>&1 | tee -a "$LOGFILE"
 echo 'source /opt/intel/oneapi/setvars.sh' >> ~/.bashrc
 
-echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
-install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
-cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
-cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
-cp -f tapety/* ~/tapety/
-
-echo "🖼️ Ustawianie tapety pulpitu (XFCE)..." | tee -a "$LOGFILE"
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -s ~/tapety/planety.jpg
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-style -s 3
-
-echo "📡 Instalacja serwera Samba..." | tee -a "$LOGFILE"
-sudo apt install -y samba 2>&1 | tee -a "$LOGFILE"
+echo "📁 Tworzenie użytkownika Samba..." | tee -a "$LOGFILE"
+sudo useradd -m -s /bin/bash "$SAMBA_USER"
+echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo passwd "$SAMBA_USER"
+echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo smbpasswd -a "$SAMBA_USER"
+sudo smbpasswd -e "$SAMBA_USER"
 
 echo "📁 Tworzenie katalogów do udostępnienia..." | tee -a "$LOGFILE"
-mkdir -p ~/Obrazy ~/Wideo
-chmod 777 ~/Obrazy ~/Wideo
+mkdir -p /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
+chmod 770 /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
+chown $SAMBA_USER:$SAMBA_USER /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
 
-echo "🛠️ Konfiguracja Samby..." | tee -a "$LOGFILE"
+echo "🛠️ Konfiguracja Samby z autoryzacją..." | tee -a "$LOGFILE"
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
 cat <<EOF | sudo tee -a /etc/samba/smb.conf
 
 [Obrazy]
-   path = /home/$USER/Obrazy
+   path = /home/$SAMBA_USER/Obrazy
+   valid users = $SAMBA_USER
    browseable = yes
    writable = yes
-   guest ok = yes
-   create mask = 0777
-   directory mask = 0777
+   create mask = 0770
+   directory mask = 0770
 
 [Wideo]
-   path = /home/$USER/Wideo
+   path = /home/$SAMBA_USER/Wideo
+   valid users = $SAMBA_USER
    browseable = yes
    writable = yes
-   guest ok = yes
-   create mask = 0777
-   directory mask = 0777
+   create mask = 0770
+   directory mask = 0770
 EOF
 
 echo "🔁 Restartowanie Samby..." | tee -a "$LOGFILE"
@@ -100,6 +96,9 @@ sudo ufw default allow outgoing
 for subnet in 192.168.0.0/24 192.168.1.0/24; do
   for port in 22 139 445 1716; do
     sudo ufw allow from $subnet to any port $port proto tcp
+  done
+  for port in 137 138; do
+    sudo ufw allow from $subnet to any port $port proto udp
   done
 done
 
@@ -137,4 +136,4 @@ sudo gdebi -n rstudio.deb 2>&1 | tee -a "$LOGFILE"
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
 sudo systemctl restart lightdm
 
-echo "✅ Instalacja zakończona. XFCE, PyCharm, PlayOnLinux, R, RStudio, CUDA i oneAPI są gotowe do pracy." | tee -a "$LOGFILE"
+echo "✅ Instalacja zakończona. XFCE, PyCharm, PlayOnLinux, R, RStudio, CUDA, oneAPI i Samba są gotowe do pracy." | tee -a "$LOGFILE"
