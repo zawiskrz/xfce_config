@@ -52,8 +52,36 @@ done
 source "$CONFIG_FILE"
 
 if [[ "$XFCE" == "true" ]]; then
-  echo "📦 Instalacja XFCE..." | tee -a "$LOGFILE"
-  sudo apt install -y task-xfce-desktop menulibre 2>&1 | tee -a "$LOGFILE"
+  echo "📦 Instalacja XFCE i konfiguracja języka..." | tee -a "$LOGFILE"
+  sudo apt install -y \
+    task-xfce-desktop menulibre \
+    bluez pulseaudio-module-bluetooth \
+    keyboard-configuration console-setup locales \
+    task-polish-desktop \
+    thunderbird vlc calibre rhythmbox shotwell \
+    libreoffice-l10n-pl libreoffice-help-pl \
+    wxmaxima python3 python3-pip python3-venv \
+    mc htop wget curl gdebi-core openssh-server ufw papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
+
+  echo "🌍 Ustawianie języka polskiego i klawiatury..." | tee -a "$LOGFILE"
+  sudo sed -i 's/^# pl_PL.UTF-8 UTF-8/pl_PL.UTF-8 UTF-8/' /etc/locale.gen
+  sudo locale-gen
+  sudo update-locale LANG=pl_PL.UTF-8
+  sudo localectl set-locale LANG=pl_PL.UTF-8
+  sudo localectl set-keymap pl
+  sudo localectl set-x11-keymap pl pc105
+
+  echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
+  install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
+  cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
+  cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
+  cp -f tapety/* ~/tapety/
+
+  echo "🖼️ Ustawianie tapety pulpitu (XFCE)..." | tee -a "$LOGFILE"
+  MONITOR=$(xfconf-query -c xfce4-desktop -l | grep last-image | head -n1 | cut -d'/' -f4)
+  xfconf-query -c xfce4-desktop -p /backdrop/screen0/$MONITOR/workspace0/last-image -s "$HOME/tapety/planety.jpg"
+  xfconf-query -c xfce4-desktop -p /backdrop/screen0/$MONITOR/workspace0/image-style -s 3
+
 fi
 
 if [[ "$NVIDIA" == "true" ]]; then
