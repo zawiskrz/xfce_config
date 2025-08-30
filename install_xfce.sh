@@ -3,6 +3,7 @@
 LOGFILE="install_log.txt"
 PYCHARM_VERSION="2025.1"
 PYCHARM_DIR="/opt/pycharm"
+RSTUDIO_URL="https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.04.1-748-amd64.deb"
 
 echo "🔧 Aktualizacja pakietów..." | tee -a "$LOGFILE"
 sudo apt update 2>&1 | tee -a "$LOGFILE"
@@ -16,7 +17,8 @@ pulseaudio pulseaudio-utils pulseaudio-module-bluetooth pavucontrol libcanberra-
 firefox-esr thunderbird vlc calibre rhythmbox shotwell \
 libreoffice libreoffice-l10n-pl libreoffice-help-pl \
 wxmaxima python3 python3-pip python3-venv \
-mc htop x11-xserver-utils papirus-icon-theme wget 2>&1 | tee -a "$LOGFILE"
+playonlinux r-base r-base-dev r-recommended \
+mc htop x11-xserver-utils papirus-icon-theme wget curl gdebi-core 2>&1 | tee -a "$LOGFILE"
 
 echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
 install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
@@ -57,8 +59,12 @@ Type=Application
 Categories=Development;IDE;
 EOF
 
+
+echo "🧪 Instalacja RStudio..." | tee -a "$LOGFILE"
+wget "$RSTUDIO_URL" -O rstudio.deb 2>&1 | tee -a "$LOGFILE"
+sudo gdebi -n rstudio.deb 2>&1 | tee -a "$LOGFILE"
+
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
 sudo systemctl restart lightdm
 
-echo "✅ Instalacja zakończona. XFCE i PyCharm są gotowe do użycia." | tee -a "$LOGFILE"
-
+echo "✅ Instalacja zakończona. XFCE, PyCharm, PlayOnLinux, R i RStudio są gotowe do pracy." | tee -a "$LOGFILE"
