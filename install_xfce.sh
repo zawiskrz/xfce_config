@@ -73,6 +73,8 @@ if [[ "$XFCE" == "true" ]]; then
   sudo localectl set-locale LANG=pl_PL.UTF-8
   sudo localectl set-keymap pl
   sudo localectl set-x11-keymap pl pc105 legacy
+  echo 'setxkbmap -model pc105 -layout pl -variant legacy' >> ~/.xprofile
+  chmod +x ~/.xprofile
 
 
   echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
