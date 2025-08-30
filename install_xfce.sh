@@ -1,34 +1,3 @@
-# 🧰 Skrypt instalacyjny XFCE dla Debiana 13 (Trixie)
-
-Ten skrypt automatyzuje instalację pełnego środowiska graficznego **XFCE** w systemie Debian 13. Zawiera najważniejsze pakiety, aplikacje użytkowe, konfigurację pulpitu oraz zapory sieciowej.
-
----
-
-## 📦 Instalowane pakiety
-
-| Pakiet | Przeznaczenie |
-|--------|---------------|
-| `task-xfce-desktop` | Pełne środowisko XFCE z menedżerem logowania LightDM |
-| `openssh-server` | Dostęp SSH do systemu |
-| `ufw` | Zapora sieciowa z prostą konfiguracją |
-| `network-manager-gnome` | Aplet sieci w trayu |
-| `bluez`, `blueman` | Obsługa Bluetooth |
-| `pulseaudio`, `pavucontrol`, `libcanberra-pulse` | System dźwięku i kontrola głośności |
-| `firefox-esr`, `thunderbird`, `vlc`, `calibre`, `rhythmbox`, `shotwell` | Aplikacje użytkowe |
-| `libreoffice`, `libreoffice-l10n-pl`, `libreoffice-help-pl` | Pakiet biurowy z lokalizacją PL |
-| `wxmaxima` | Obliczenia symboliczne |
-| `python3`, `python3-pip`, `python3-venv` | Środowisko Pythona |
-| `mc`, `htop` | Narzędzia terminalowe |
-| `x11-xserver-utils` | Narzędzia X11 |
-| `papirus-icon-theme` | Ikony systemowe |
-
----
-
-## 🛠️ Skrypt instalacyjny
-
-Plik: `install_xfce.sh`
-
-```bash
 #!/bin/bash
 
 LOGFILE="install_log.txt"
