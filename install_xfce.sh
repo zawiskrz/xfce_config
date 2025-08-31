@@ -11,12 +11,9 @@ PLAYONLINUX_URL="https://www.playonlinux.com/script_files/PlayOnLinux/4.3.4/Play
 CUDA_KEYRING_URL="https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb"
 ONEAPI_INSTALLER="l_BaseKit_p_2025.1.0.495_offline.sh"
 ONEAPI_URL="https://registrationcenter-download.intel.com/akdlm/irc_nas/19184/${ONEAPI_INSTALLER}"
-SAMBA_USER="zawiskrz"
-SAMBA_PASS="smbuser"
 
 FILES_TO_SOURCE=(
   "./ufw_setup.sh"
-  "./smb_setup.sh"
   "./emacs_setup.sh"
   "./xfce_setup.sh"
   "./cuda_setup.sh"
@@ -100,6 +97,12 @@ if [[ "$EMACS" == "true" ]]; then
 fi
 
 if [[ "$SAMBA" == "true" ]]; then
+  SAMBA_USER="$(logname)"
+  #Koniecznie należy podać hasło dla użytkownia
+  read -s -p "🔑 Podaj hasło dla użytkownika Samba: " SAMBA_PASS
+  echo
+  source  "./smb_setup.sh"
+
   configure_smb
 fi
 
