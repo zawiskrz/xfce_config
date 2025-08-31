@@ -224,7 +224,7 @@ sudo ufw --force enable
 echo "✅ Zapora UFW aktywna." | tee -a "$LOGFILE"
 
 echo "🧪 Usuwanie nadmiarowego oprogramowania " | tee -a "$LOGFILE"
-sudo apt purge -y --auto-remove parole quod-libet
+sudo apt purge -y --auto-remove parole quod-libet  ristretto
 
 echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
 sudo systemctl restart lightdm
