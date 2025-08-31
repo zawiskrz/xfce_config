@@ -14,6 +14,25 @@ ONEAPI_URL="https://registrationcenter-download.intel.com/akdlm/irc_nas/19184/${
 SAMBA_USER="smbuser"
 SAMBA_PASS="smbuser"
 
+FILES_TO_SOURCE=(
+  "./ufw_setup.sh"
+  "./smb_setup.sh"
+  "./emacs_setup.sh"
+  "./xfce_setup.sh"
+  "./cuda_setup.sh"
+  "./pycharm_setup.sh"
+  "./rstudio_setup.sh"
+  "./nvidia_setup.sh"
+)
+
+for file in "${FILES_TO_SOURCE[@]}"; do
+  if [[ -f "$file" ]]; then
+    source "$file"
+  else
+    echo "⚠️ Plik $file nie istnieje, pomijam." | tee -a "$LOGFILE"
+  fi
+done
+
 echo "🔧 Aktualizacja pakietów..." | tee -a "$LOGFILE"
 sudo apt update 2>&1 | tee -a "$LOGFILE"
 
@@ -26,13 +45,12 @@ options=(
   1 "Środowisko XFCE" on
   2 "Sterowniki NVIDIA" off
   3 "CUDA Toolkit" off
-  4 "Intel oneAPI" off
-  5 "PyCharm" off
-  6 "RStudio" off
-  7 "Emacs" off
-  8 "Samba + udostępnienia" off
-  9 "Firewall" on
-  10 "Restart X11" off
+  4 "PyCharm" off
+  5 "RStudio" off
+  6 "Emacs" off
+  7 "Samba + udostępnienia" off
+  8 "Firewall" on
+  9 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -44,12 +62,12 @@ for choice in $choices; do
     1) echo "XFCE=true" >> "$CONFIG_FILE" ;;
     2) echo "NVIDIA=true" >> "$CONFIG_FILE" ;;
     3) echo "CUDA=true" >> "$CONFIG_FILE" ;;
-    5) echo "PYCHARM=true" >> "$CONFIG_FILE" ;;
-    6) echo "RSTUDIO=true" >> "$CONFIG_FILE" ;;
-    7) echo "EMACS=true" >> "$CONFIG_FILE" ;;
-    8) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
-    9) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
-    10) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
+    4) echo "PYCHARM=true" >> "$CONFIG_FILE" ;;
+    5) echo "RSTUDIO=true" >> "$CONFIG_FILE" ;;
+    6) echo "EMACS=true" >> "$CONFIG_FILE" ;;
+    7) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
+    8) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
+    9) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -57,335 +75,39 @@ done
 source "$CONFIG_FILE"
 
 if [[ "$XFCE" == "true" ]]; then
-  echo "📦 Instalacja XFCE i konfiguracja języka..." | tee -a "$LOGFILE"
-  sudo apt install -y \
-    task-xfce-desktop menulibre \
-    bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
-    keyboard-configuration console-setup locales \
-    task-polish-desktop \
-    thunderbird vlc calibre rhythmbox shotwell \
-    libreoffice-l10n-pl libreoffice-help-pl \
-    wxmaxima python3 python3-pip python3-venv \
-    mc htop wget curl gdebi-core \
-    remmina filezilla gparted mintstick gnome-calculator \
-    openssh-server ufw papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
-
-  echo "🧪 Usuwanie nadmiarowego oprogramowania " | tee -a "$LOGFILE"
-  sudo apt purge -y --auto-remove parole quod-libet  ristretto mousepad
-
-  sudo systemctl enable bluetooth
-  sudo systemctl start bluetooth
-  sudo rfkill unblock bluetooth
-
-  echo "🔊 Konfiguracja globalnego autostartu PulseAudio..." | tee -a "$LOGFILE"
-  sudo mkdir -p /etc/xdg/autostart
-  sudo bash -c 'cat > /etc/xdg/autostart/pulseaudio.desktop <<EOF
-    [Desktop Entry]
-    Type=Application
-    Exec=pulseaudio --start
-    Hidden=false
-    NoDisplay=false
-    X-GNOME-Autostart-enabled=true
-    Name=PulseAudio
-    Comment=Start PulseAudio sound server
-    EOF'
-
-  echo "🌍 Ustawianie języka polskiego i klawiatury..." | tee -a "$LOGFILE"
-  sudo sed -i 's/^# pl_PL.UTF-8 UTF-8/pl_PL.UTF-8 UTF-8/' /etc/locale.gen
-  sudo locale-gen
-  sudo update-locale LANG=pl_PL.UTF-8
-  sudo localectl set-locale LANG=pl_PL.UTF-8
-  sudo localectl set-keymap pl
-  sudo localectl set-x11-keymap pl pc105 legacy
-
-  # Ustawienie klawiatury po starcie X11
-  echo 'setxkbmap -model pc105 -layout pl -variant legacy' >> ~/.xprofile
-  chmod +x ~/.xprofile
-
-
-
-  echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
-  install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
-  cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
-  cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
-  cp -f tapety/* ~/tapety/
-
-
+  configure_xfce
 fi
 
 if [[ "$NVIDIA" == "true" ]]; then
-  echo "🎮 Instalacja sterowników NVIDIA..." | tee -a "$LOGFILE"
-  sudo apt install -y nvidia-detect 2>&1 | tee -a "$LOGFILE"
-  if nvidia-detect | grep -q "recommended"; then
-    sudo apt install -y nvidia-driver nvidia-settings 2>&1 | tee -a "$LOGFILE"
-  fi
+  configure_nvidia
 fi
 
 if [[ "$CUDA" == "true" ]]; then
-  echo "⚡ Instalacja CUDA Toolkit..." | tee -a "$LOGFILE"
-  wget "$CUDA_KEYRING_URL" -O cuda-keyring.deb 2>&1 | tee -a "$LOGFILE"
-  sudo dpkg -i cuda-keyring.deb 2>&1 | tee -a "$LOGFILE"
-  sudo apt update
-  sudo apt install -y cuda 2>&1 | tee -a "$LOGFILE"
-  echo 'export PATH=/usr/local/cuda/bin:$PATH' >> ~/.bashrc
-  echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+  configure_cuda
 fi
 
-
-
 if [[ "$PYCHARM" == "true" ]]; then
-  echo "🐍 Instalacja PyCharma..." | tee -a "$LOGFILE"
-  wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSION}.tar.gz -O pycharm.tar.gz 2>&1 | tee -a "$LOGFILE"
-  tar -xzf pycharm.tar.gz 2>&1 | tee -a "$LOGFILE"
-  sudo mv pycharm-community-${PYCHARM_VERSION} "$PYCHARM_DIR"
-  cat <<EOF | sudo tee /usr/share/applications/pycharm.desktop
-[Desktop Entry]
-Name=PyCharm Community
-Exec=${PYCHARM_DIR}/bin/pycharm
-Icon=${PYCHARM_DIR}/bin/pycharm.png
-Type=Application
-Categories=Development;IDE;
-EOF
+  configure_pycharm
 fi
 
 if [[ "$RSTUDIO" == "true" ]]; then
-  echo "🧪 Instalacja R 4.4.0 i RStudio..." | tee -a "$LOGFILE"
-
-  # Wymuszenie klasycznego GPG zamiast Sequoia (apt.conf.d)
-  echo 'Binary::apt::Acquire::GPGV::Options "--use-legacy-gpg";' | \
-    sudo tee /etc/apt/apt.conf.d/99legacy-gpg > /dev/null
-
-  # Instalacja narzędzi do obsługi kluczy
-  sudo apt install -y dirmngr gnupg ca-certificates | tee -a "$LOGFILE"
-
-  # Dodanie klucza CRAN ręcznie
-  gpg --keyserver keyserver.ubuntu.com --recv-keys 7BA040A510E4E66ED3743EC1B8F25A8A73EACF41
-  gpg --export 7BA040A510E4E66ED3743EC1B8F25A8A73EACF41 | \
-    sudo tee /etc/apt/trusted.gpg.d/cran.gpg > /dev/null
-
-  # Dodanie repozytorium CRAN dla Debiana 13
-  echo "deb https://cloud.r-project.org/bin/linux/debian trixie-cran40/" | \
-    sudo tee /etc/apt/sources.list.d/cran.list > /dev/null
-
-  # Aktualizacja listy pakietów
-  sudo apt update | tee -a "$LOGFILE"
-
-  # Instalacja R 4.4.0 i zależności
-  sudo apt install -y r-base r-base-dev gdebi-core libclang-dev libssl-dev | tee -a "$LOGFILE"
-
-  # Pobranie i instalacja RStudio
-  wget "$RSTUDIO_URL" -O rstudio.deb | tee -a "$LOGFILE"
-  sudo gdebi -n rstudio.deb | tee -a "$LOGFILE"
-
-  # Weryfikacja wersji R
-  echo "📋 Zainstalowana wersja R:" | tee -a "$LOGFILE"
-  R --version | tee -a "$LOGFILE"
+ configure_rstudio
 fi
 
 if [[ "$EMACS" == "true" ]]; then
 
-  echo "🔧 Instalacja Emacs i narzędzi..."
-
-  # Aktualizacja systemu
-  sudo apt update && sudo apt upgrade -y
-
-  # Instalacja Emacs (GUI + terminal)
-  sudo apt install -y emacs git curl
-
-  # Instalacja zależności do kompilacji pakietów (np. dla lsp-mode)
-  sudo apt install -y build-essential cmake python3-pip nodejs npm ripgrep
-
-  # Instalacja narzędzi programistycznych
-  sudo apt install -y clang-format shellcheck
-
-  # Tworzenie katalogu konfiguracyjnego
-  mkdir -p ~/.emacs.d
-
-  # Tworzenie pliku init.el z pełną konfiguracją
-  cat << 'EOF' > ~/.emacs.d/init.el
-;; -------------------------------
-;; Emacs pełna konfiguracja
-;; -------------------------------
-
-;; Włącz package.el i dodaj MELPA
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
-
-;; Automatyczna instalacja use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
-(setq use-package-always-ensure t)
-
-;; 🔧 Interfejs
-(use-package which-key
-  :config (which-key-mode))
-
-(use-package vertico
-  :init (vertico-mode))
-
-(use-package marginalia
-  :after vertico
-  :init (marginalia-mode))
-
-(use-package consult)
-
-(use-package avy
-  :bind ("C-:" . avy-goto-char))
-
-(use-package expand-region
-  :bind ("C-=" . er/expand-region))
-
-;; 💻 Programowanie
-(use-package lsp-mode
-  :hook ((python-mode . lsp)
-         (c-mode . lsp)
-         (rust-mode . lsp))
-  :commands lsp)
-
-(use-package company
-  :hook (after-init . global-company-mode))
-
-(use-package flycheck
-  :init (global-flycheck-mode))
-
-(use-package projectile
-  :init (projectile-mode +1)
-  :bind-keymap ("C-c p" . projectile-command-map))
-
-(use-package magit
-  :bind ("C-x g" . magit-status))
-
-(use-package dumb-jump
-  :config (setq dumb-jump-mode t)
-  :bind (("M-g o" . dumb-jump-go-other-window)
-         ("M-g j" . dumb-jump-go)
-         ("M-g b" . dumb-jump-back)))
-
-;; 📄 Pisanie i dokumentacja
-(use-package markdown-mode
-  :mode "\\.md\\'")
-
-(use-package org
-  :config
-  (setq org-log-done 'time
-        org-startup-indented t))
-
-(use-package org-super-agenda
-  :config (org-super-agenda-mode))
-
-(use-package org-ql)
-
-(use-package nov
-  :mode "\\.epub\\'")
-
-(use-package darkroom
-  :hook (markdown-mode . darkroom-mode))
-
-;; 🌐 Internet i dokumentacja
-(use-package eww) ;; Wbudowana przeglądarka
-
-(use-package devdocs
-  :bind ("C-c d" . devdocs-lookup))
-
-(use-package restclient)
-
-(use-package ob-restclient
-  :after org)
-
-;; 🧠 Usprawnienia edycji (bez Vima)
-(use-package multiple-cursors
-  :bind (("C-c m c" . mc/edit-lines)
-         ("C->"     . mc/mark-next-like-this)
-         ("C-<"     . mc/mark-previous-like-this)))
-
-;; 🧹 Dodatki
-(setq inhibit-startup-screen t)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(global-display-line-numbers-mode t)
-EOF
-
-  echo "✅ Instalacja zakończona. Uruchom Emacs, by rozpocząć pracę!"
-
+  configure_emacs
 fi
 
 if [[ "$SAMBA" == "true" ]]; then
-  echo "📡 Instalacja Samby z autoryzacją..." | tee -a "$LOGFILE"
-
-  # Instalacja Samby
-  sudo apt update
-  sudo apt install -y samba smbclient gvfs-backends gvfs-fuse | tee -a "$LOGFILE"
-
-  # Tworzenie użytkownika systemowego
-  sudo useradd -m -s /bin/bash "$SAMBA_USER"
-  echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo passwd "$SAMBA_USER"
-
-  # Dodanie użytkownika do Samby
-  echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo smbpasswd -a "$SAMBA_USER"
-  sudo smbpasswd -e "$SAMBA_USER"
-
-  # Tworzenie katalogów
-  mkdir -p /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
-  chmod 770 /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
-  chown $SAMBA_USER:$SAMBA_USER /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
-
-  # Backup i konfiguracja smb.conf
-  sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
-
-  cat <<EOF | sudo tee -a /etc/samba/smb.conf
-
-[Obrazy]
-   path = /home/$SAMBA_USER/Obrazy
-   valid users = $SAMBA_USER
-   browseable = yes
-   writable = yes
-   create mask = 0770
-   directory mask = 0770
-   guest ok = no
-
-[Wideo]
-   path = /home/$SAMBA_USER/Wideo
-   valid users = $SAMBA_USER
-   browseable = yes
-   writable = yes
-   create mask = 0770
-   directory mask = 0770
-   guest ok = no
-EOF
-
-  # Restart usług
-  sudo systemctl restart smbd nmbd
-
+  configure_smb
 fi
 
 if [[ "$FIREWALL" == "true" ]]; then
-
-  echo "🛡️ Konfiguracja zapory UFW..." | tee -a "$LOGFILE"
-  sudo ufw --force reset
-  sudo ufw default deny incoming
-  sudo ufw default allow outgoing
-
-  for subnet in 192.168.0.0/24 192.168.1.0/24 10.0.2.0/24; do
-    for port in 22 139 445 1716; do
-      sudo ufw allow from $subnet to any port $port proto tcp
-    done
-    for port in 137 138; do
-      sudo ufw allow from $subnet to any port $port proto udp
-    done
-  done
-
-  sudo ufw --force enable
-  echo "✅ Zapora UFW aktywna." | tee -a "$LOGFILE"
-
+  configure_ufw
 fi
 
 if [[ "$lIGHTDM" == "true" ]]; then
-
   echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
   sudo systemctl restart lightdm
 fi
