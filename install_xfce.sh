@@ -60,7 +60,9 @@ if [[ "$XFCE" == "true" ]]; then
     thunderbird vlc calibre rhythmbox shotwell \
     libreoffice-l10n-pl libreoffice-help-pl \
     wxmaxima python3 python3-pip python3-venv \
-    mc htop wget curl gdebi-core openssh-server ufw papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
+    mc htop wget curl gdebi-core \
+    remmina filezilla gparted mintstick \
+    openssh-server ufw papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
 
   sudo systemctl enable bluetooth
   sudo systemctl start bluetooth
