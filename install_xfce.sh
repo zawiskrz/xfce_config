@@ -23,7 +23,7 @@ sudo apt install -y dialog 2>&1 | tee -a "$LOGFILE"
 # Interaktywne menu
 cmd=(dialog --separate-output --checklist "Wybierz komponenty do instalacji:" 22 76 16)
 options=(
-  1 "Środowisko XFCE" off
+  1 "Środowisko XFCE" on
   2 "Sterowniki NVIDIA" off
   3 "CUDA Toolkit" off
   4 "Intel oneAPI" off
@@ -31,6 +31,8 @@ options=(
   6 "RStudio" off
   7 "Emacs" off
   8 "Samba + udostępnienia" off
+  9 "Firewall" on
+  10 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -46,6 +48,8 @@ for choice in $choices; do
     6) echo "RSTUDIO=true" >> "$CONFIG_FILE" ;;
     7) echo "EMACS=true" >> "$CONFIG_FILE" ;;
     8) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
+    9) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
+    10) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -65,6 +69,9 @@ if [[ "$XFCE" == "true" ]]; then
     mc htop wget curl gdebi-core \
     remmina filezilla gparted mintstick gnome-calculator \
     openssh-server ufw papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
+
+  echo "🧪 Usuwanie nadmiarowego oprogramowania " | tee -a "$LOGFILE"
+  sudo apt purge -y --auto-remove parole quod-libet  ristretto mousepad
 
   sudo systemctl enable bluetooth
   sudo systemctl start bluetooth
@@ -134,7 +141,7 @@ if [[ "$PYCHARM" == "true" ]]; then
   cat <<EOF | sudo tee /usr/share/applications/pycharm.desktop
 [Desktop Entry]
 Name=PyCharm Community
-Exec=${PYCHARM_DIR}/bin/pycharm.sh
+Exec=${PYCHARM_DIR}/bin/pycharm
 Icon=${PYCHARM_DIR}/bin/pycharm.png
 Type=Application
 Categories=Development;IDE;
@@ -303,22 +310,33 @@ if [[ "$EMACS" == "true" ]]; then
 (global-display-line-numbers-mode t)
 EOF
 
-echo "✅ Instalacja zakończona. Uruchom Emacs, by rozpocząć pracę!"
-
-
+  echo "✅ Instalacja zakończona. Uruchom Emacs, by rozpocząć pracę!"
 
 fi
+
 if [[ "$SAMBA" == "true" ]]; then
   echo "📡 Instalacja Samby z autoryzacją..." | tee -a "$LOGFILE"
-  sudo apt install -y samba 2>&1 | tee -a "$LOGFILE"
+
+  # Instalacja Samby
+  sudo apt update
+  sudo apt install -y samba smbclient gvfs-backends gvfs-fuse | tee -a "$LOGFILE"
+
+  # Tworzenie użytkownika systemowego
   sudo useradd -m -s /bin/bash "$SAMBA_USER"
   echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo passwd "$SAMBA_USER"
+
+  # Dodanie użytkownika do Samby
   echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo smbpasswd -a "$SAMBA_USER"
   sudo smbpasswd -e "$SAMBA_USER"
+
+  # Tworzenie katalogów
   mkdir -p /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
   chmod 770 /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
   chown $SAMBA_USER:$SAMBA_USER /home/$SAMBA_USER/Obrazy /home/$SAMBA_USER/Wideo
+
+  # Backup i konfiguracja smb.conf
   sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
   cat <<EOF | sudo tee -a /etc/samba/smb.conf
 
 [Obrazy]
@@ -328,6 +346,7 @@ if [[ "$SAMBA" == "true" ]]; then
    writable = yes
    create mask = 0770
    directory mask = 0770
+   guest ok = no
 
 [Wideo]
    path = /home/$SAMBA_USER/Wideo
@@ -336,31 +355,39 @@ if [[ "$SAMBA" == "true" ]]; then
    writable = yes
    create mask = 0770
    directory mask = 0770
+   guest ok = no
 EOF
-  sudo systemctl restart smbd
+
+  # Restart usług
+  sudo systemctl restart smbd nmbd
+
 fi
 
-echo "🛡️ Konfiguracja zapory UFW..." | tee -a "$LOGFILE"
-sudo ufw --force reset
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
+if [[ "$FIREWALL" == "true" ]]; then
 
-for subnet in 192.168.0.0/24 192.168.1.0/24; do
-  for port in 22 139 445 1716; do
-    sudo ufw allow from $subnet to any port $port proto tcp
+  echo "🛡️ Konfiguracja zapory UFW..." | tee -a "$LOGFILE"
+  sudo ufw --force reset
+  sudo ufw default deny incoming
+  sudo ufw default allow outgoing
+
+  for subnet in 192.168.0.0/24 192.168.1.0/24 10.0.2.0/24; do
+    for port in 22 139 445 1716; do
+      sudo ufw allow from $subnet to any port $port proto tcp
+    done
+    for port in 137 138; do
+      sudo ufw allow from $subnet to any port $port proto udp
+    done
   done
-  for port in 137 138; do
-    sudo ufw allow from $subnet to any port $port proto udp
-  done
-done
 
-sudo ufw --force enable
-echo "✅ Zapora UFW aktywna." | tee -a "$LOGFILE"
+  sudo ufw --force enable
+  echo "✅ Zapora UFW aktywna." | tee -a "$LOGFILE"
 
-echo "🧪 Usuwanie nadmiarowego oprogramowania " | tee -a "$LOGFILE"
-sudo apt purge -y --auto-remove parole quod-libet  ristretto mousepad
+fi
 
-echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
-sudo systemctl restart lightdm
+if [[ "$lIGHTDM" == "true" ]]; then
+
+  echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
+  sudo systemctl restart lightdm
+fi
 
 echo "✅ Instalacja zakończona. Wybrane komponenty zostały zainstalowane." | tee -a "$LOGFILE"
