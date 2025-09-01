@@ -13,14 +13,14 @@ ONEAPI_INSTALLER="l_BaseKit_p_2025.1.0.495_offline.sh"
 ONEAPI_URL="https://registrationcenter-download.intel.com/akdlm/irc_nas/19184/${ONEAPI_INSTALLER}"
 
 FILES_TO_SOURCE=(
-  "./ufw_setup.sh"
-  "./emacs_setup.sh"
-  "./xfce_setup.sh"
-  "./cuda_setup.sh"
-  "./pycharm_setup.sh"
-  "./rstudio_setup.sh"
-  "./nvidia_setup.sh"
-  "./docker_setup.sh"
+  "./modules/ufw_setup.sh"
+  "./modules/emacs_setup.sh"
+  "./modules/xfce_setup.sh"
+  "./modules/cuda_setup.sh"
+  "./modules/pycharm_setup.sh"
+  "./modules/rstudio_setup.sh"
+  "./modules/nvidia_setup.sh"
+  "./modules/docker_setup.sh"
 )
 
 for file in "${FILES_TO_SOURCE[@]}"; do
