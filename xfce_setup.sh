@@ -3,7 +3,7 @@
 configure_xfce() {
     echo "📦 Instalacja XFCE i konfiguracja języka..." | tee -a "$LOGFILE"
   sudo apt install -y \
-    task-xfce-desktop menulibre \
+    task-xfce-desktop menulibre gnome-package-updater \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
     keyboard-configuration console-setup locales \
     task-polish-desktop \
