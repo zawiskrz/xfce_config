@@ -7,7 +7,7 @@ install_environment_packages() {
     task-xfce-desktop task-polish-desktop synaptic package-update-indicator \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
     language-pack-pl keyboard-configuration console-setup locales \
-    openssh-server ufw papirus-icon-theme \
+    openssh-server ufw gufw papirus-icon-theme \
     unattended-upgrades policykit-1 gdebi-core \
     gnome-calculator gparted mintstick 2>&1 | tee -a "$LOGFILE"
 }
@@ -109,8 +109,16 @@ configure_flatpak() {
   # duże zuzucie RAMu po instalacji gnome-software gnome-software-plugin-flatpak
   # Dodanie repozytorium Flathub
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
   echo "✅ Flatpak skonfigurowany z Flathub." | tee -a "$LOGFILE"
+
+  echo "📥 Instalacja aplikacji z Flathub .." | tee -a "$LOGFILE"
+
+  # Instalacja aplikacji
+  flatpak install -y flathub com.github.IsmaelMartinez.teams_for_linux \
+          com.ktechpit.whatsie | tee -a "$LOGFILE"
+
+  echo "✅ Aplikacje zostały zainstalowane." | tee -a "$LOGFILE"
+
 }
 
 
