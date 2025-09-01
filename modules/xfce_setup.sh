@@ -1,19 +1,25 @@
 #!/bin/bash
 
-install_packages() {
-  echo "📦 Instalacja pakietów XFCE i użytkowych..." | tee -a "$LOGFILE"
+install_environment_packages() {
+  echo "🛠️ Instalacja pakietów środowiska systemowego..." | tee -a "$LOGFILE"
   sudo apt update
   sudo apt install -y \
-    task-xfce-desktop  task-polish-desktop menulibre synaptic package-update-indicator \
+    task-xfce-desktop task-polish-desktop synaptic package-update-indicator \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
     keyboard-configuration console-setup locales \
-    thunderbird vlc calibre rhythmbox shotwell \
+    openssh-server ufw papirus-icon-theme \
+    unattended-upgrades policykit-1 gdebi-core \
+    gnome-calculator gparted mintstick 2>&1 | tee -a "$LOGFILE"
+}
+
+install_user_apps() {
+  echo "🎯 Instalacja dodatkowego oprogramowania użytkowego..." | tee -a "$LOGFILE"
+  sudo apt install -y \
+    menulibre thunderbird vlc calibre rhythmbox shotwell \
     libreoffice-l10n-pl libreoffice-help-pl \
     wxmaxima python3 python3-pip python3-venv \
-    mc htop wget curl gdebi-core \
-    remmina filezilla gparted mintstick gnome-calculator \
-    openssh-server ufw papirus-icon-theme \
-    unattended-upgrades policykit-1 2>&1 | tee -a "$LOGFILE"
+    mc htop wget curl \
+    remmina filezilla 2>&1 | tee -a "$LOGFILE"
 }
 
 remove_unwanted() {
@@ -109,7 +115,8 @@ configure_flatpak() {
 
 
 configure_xfce() {
-  install_packages
+  install_environment_packages
+  install_user_apps
   remove_unwanted
   configure_bluetooth
   setup_pulseaudio_autostart
