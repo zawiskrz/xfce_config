@@ -4,15 +4,14 @@ install_environment_packages() {
   echo "🛠️ Instalacja pakietów środowiska systemowego..." | tee -a "$LOGFILE"
   sudo apt update
 sudo apt install -y  \
-    task-xfce-desktop task-polish-desktop synaptic package-update-indicator \
-    bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
-    keyboard-configuration console-setup locales \
+sudo apt install -y \
+    task-xfce-desktop task-polish-desktop \
+    synaptic package-update-indicator \
+    bluez blueman pulseaudio-module-bluetooth \
     openssh-server ufw gufw papirus-icon-theme \
     unattended-upgrades gdebi-core \
-    gnome-calculator gparted mintstick timeshift \
-    xfce4-whiskermenu-plugin xfce4-notes ristretto mousepad \
-    gvfs gvfs-backends gvfs-fuse xdg-user-dirs xdg-utils \
-    bleachbit p7zip-full file-roller firefox-esr 2>&1 | tee -a "$LOGFILE"
+    mintstick timeshift \
+    bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
 
 install_user_apps() {
