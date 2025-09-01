@@ -9,7 +9,7 @@ install_environment_packages() {
     language-pack-pl keyboard-configuration console-setup locales \
     openssh-server ufw gufw papirus-icon-theme \
     unattended-upgrades policykit-1 gdebi-core \
-    gnome-calculator gparted mintstick 2>&1 | tee -a "$LOGFILE"
+    gnome-calculator gparted mintstick timeshift 2>&1 | tee -a "$LOGFILE"
 }
 
 install_user_apps() {
@@ -117,12 +117,53 @@ configure_flatpak() {
   flatpak install -y flathub com.github.IsmaelMartinez.teams_for_linux \
           app.ytmdesktop.ytmdesktop \
           com.github.unrud.VideoDownloader \
+          io.github.amit9838.mousam \
           com.ktechpit.whatsie | tee -a "$LOGFILE"
 
   echo "✅ Aplikacje zostały zainstalowane." | tee -a "$LOGFILE"
 
 }
 
+configure_redshift(){
+  echo "🌇 Instalacja Redshift..." | tee -a "$LOGFILE"
+  sudo apt install -y redshift redshift-gtk | tee -a "$LOGFILE"
+
+  echo "📍 Tworzenie konfiguracji dla Szczecina..." | tee -a "$LOGFILE"
+  mkdir -p ~/.config
+
+  cat <<EOF > ~/.config/redshift.conf
+[redshift]
+temp-day=5700
+temp-night=3500
+transition=1
+brightness=0.9
+
+[manual]
+lat=53.42894
+lon=14.55302
+EOF
+
+  echo "✅ Konfiguracja zapisana w ~/.config/redshift.conf" | tee -a "$LOGFILE"
+
+  # Opcjonalnie dodaj do autostartu
+  AUTOSTART_DIR="$HOME/.config/autostart"
+  mkdir -p "$AUTOSTART_DIR"
+
+  cat <<EOF > "$AUTOSTART_DIR/redshift.desktop"
+[Desktop Entry]
+Type=Application
+Exec=redshift-gtk -c ~/.config/redshift.conf
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Redshift
+Comment=Automatyczne dostosowanie barw ekranu
+EOF
+
+  echo "🔁 Dodano Redshift do autostartu." | tee -a "$LOGFILE"
+  echo "🎉 Gotowe! Redshift działa z ustawieniami dla Szczecina." | tee -a "$LOGFILE"
+
+}
 
 configure_xfce() {
   install_environment_packages
@@ -134,6 +175,7 @@ configure_xfce() {
   copy_user_config
   configure_updates
   configure_flatpak
+  configure_redshift
   echo "✅ Konfiguracja XFCE zakończona!" | tee -a "$LOGFILE"
 }
 
