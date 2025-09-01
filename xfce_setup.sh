@@ -4,10 +4,9 @@ install_packages() {
   echo "📦 Instalacja pakietów XFCE i użytkowych..." | tee -a "$LOGFILE"
   sudo apt update
   sudo apt install -y \
-    task-xfce-desktop menulibre synaptic package-update-indicator \
+    task-xfce-desktop  task-polish-desktop menulibre synaptic package-update-indicator \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
     keyboard-configuration console-setup locales \
-    task-polish-desktop \
     thunderbird vlc calibre rhythmbox shotwell \
     libreoffice-l10n-pl libreoffice-help-pl \
     wxmaxima python3 python3-pip python3-venv \
@@ -62,7 +61,9 @@ copy_user_config() {
   install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
   cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
   cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
-  cp -f tapety/* ~/tapety/
+  sudo mkdir -p /usr/share/backgrounds/moje-tapety
+  sudo cp -f tapety/* /usr/share/backgrounds/moje-tapety/
+
 }
 
 configure_updates() {

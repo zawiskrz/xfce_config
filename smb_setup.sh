@@ -7,10 +7,6 @@ configure_smb() {
   sudo apt update
   sudo apt install -y samba smbclient gvfs-backends gvfs-fuse | tee -a "$LOGFILE"
 
-  # Tworzenie użytkownika systemowego
-  sudo useradd -m -s /bin/bash "$SAMBA_USER"
-  echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo passwd "$SAMBA_USER"
-
   # Dodanie użytkownika do Samby
   echo -e "$SAMBA_PASS\n$SAMBA_PASS" | sudo smbpasswd -a "$SAMBA_USER"
   sudo smbpasswd -e "$SAMBA_USER"
