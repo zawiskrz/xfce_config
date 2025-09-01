@@ -6,7 +6,7 @@ install_environment_packages() {
   sudo apt install -y  \
     task-xfce-desktop task-polish-desktop \
     synaptic package-update-indicator \
-    bluez blueman pulseaudio-module-bluetooth \
+    bluez blueman pulseaudio-module-bluetooth rfkill \
     openssh-server ufw gufw papirus-icon-theme \
     gdebi-core \
     mintstick timeshift \
