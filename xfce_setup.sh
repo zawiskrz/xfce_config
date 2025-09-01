@@ -1,9 +1,10 @@
 #!/bin/bash
 
-configure_xfce() {
-    echo "📦 Instalacja XFCE i konfiguracja języka..." | tee -a "$LOGFILE"
+install_packages() {
+  echo "📦 Instalacja pakietów XFCE i użytkowych..." | tee -a "$LOGFILE"
+  sudo apt update
   sudo apt install -y \
-    task-xfce-desktop menulibre gnome-package-updater \
+    task-xfce-desktop menulibre synaptic package-update-indicator \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
     keyboard-configuration console-setup locales \
     task-polish-desktop \
@@ -12,29 +13,39 @@ configure_xfce() {
     wxmaxima python3 python3-pip python3-venv \
     mc htop wget curl gdebi-core \
     remmina filezilla gparted mintstick gnome-calculator \
-    openssh-server ufw papirus-icon-theme 2>&1 | tee -a "$LOGFILE"
+    openssh-server ufw papirus-icon-theme \
+    unattended-upgrades policykit-1 2>&1 | tee -a "$LOGFILE"
+}
 
-  echo "🧪 Usuwanie nadmiarowego oprogramowania " | tee -a "$LOGFILE"
-  sudo apt purge -y --auto-remove parole quod-libet  ristretto mousepad
+remove_unwanted() {
+  echo "🧪 Usuwanie zbędnych pakietów..." | tee -a "$LOGFILE"
+  sudo apt purge -y --auto-remove parole quod-libet ristretto mousepad
+}
 
+configure_bluetooth() {
+  echo "🔵 Konfiguracja Bluetooth..." | tee -a "$LOGFILE"
   sudo systemctl enable bluetooth
   sudo systemctl start bluetooth
   sudo rfkill unblock bluetooth
+}
 
-  echo "🔊 Konfiguracja globalnego autostartu PulseAudio..." | tee -a "$LOGFILE"
+setup_pulseaudio_autostart() {
+  echo "🔊 Autostart PulseAudio..." | tee -a "$LOGFILE"
   sudo mkdir -p /etc/xdg/autostart
-  sudo bash -c 'cat > /etc/xdg/autostart/pulseaudio.desktop <<EOF
-    [Desktop Entry]
-    Type=Application
-    Exec=pulseaudio --start
-    Hidden=false
-    NoDisplay=false
-    X-GNOME-Autostart-enabled=true
-    Name=PulseAudio
-    Comment=Start PulseAudio sound server
-    EOF'
+  sudo tee /etc/xdg/autostart/pulseaudio.desktop > /dev/null <<EOF
+[Desktop Entry]
+Type=Application
+Exec=pulseaudio --start
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=PulseAudio
+Comment=Start PulseAudio sound server
+EOF
+}
 
-  echo "🌍 Ustawianie języka polskiego i klawiatury..." | tee -a "$LOGFILE"
+configure_locale_and_keyboard() {
+  echo "🌍 Konfiguracja języka i klawiatury..." | tee -a "$LOGFILE"
   sudo sed -i 's/^# pl_PL.UTF-8 UTF-8/pl_PL.UTF-8 UTF-8/' /etc/locale.gen
   sudo locale-gen
   sudo update-locale LANG=pl_PL.UTF-8
@@ -42,15 +53,55 @@ configure_xfce() {
   sudo localectl set-keymap pl
   sudo localectl set-x11-keymap pl pc105 legacy
 
-  # Ustawienie klawiatury po starcie X11
   echo 'setxkbmap -model pc105 -layout pl -variant legacy' >> ~/.xprofile
   chmod +x ~/.xprofile
+}
 
-
-
+copy_user_config() {
   echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
   install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
   cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
   cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
   cp -f tapety/* ~/tapety/
 }
+
+configure_updates() {
+  echo "🔄 Konfiguracja automatycznych aktualizacji..." | tee -a "$LOGFILE"
+
+  # Aktywacja unattended-upgrades
+  sudo dpkg-reconfigure -plow unattended-upgrades
+
+  # Dodanie package-update-indicator do autostartu
+  mkdir -p ~/.config/autostart
+  tee ~/.config/autostart/package-update-indicator.desktop > /dev/null <<EOF
+[Desktop Entry]
+Type=Application
+Exec=package-update-indicator
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Aktualizacje systemu
+Comment=Powiadomienia o dostępnych aktualizacjach
+EOF
+
+  # Ustawienie Synaptic jako domyślnego menedżera aktualizacji
+  mkdir -p ~/.config/package-update-indicator
+  tee ~/.config/package-update-indicator/settings.conf > /dev/null <<EOF
+[General]
+update-viewer=synaptic-pkexec
+check-interval=daily
+EOF
+}
+
+configure_xfce() {
+  install_packages
+  remove_unwanted
+  configure_bluetooth
+  setup_pulseaudio_autostart
+  configure_locale_and_keyboard
+  copy_user_config
+  configure_updates
+
+  echo "✅ Konfiguracja XFCE zakończona!" | tee -a "$LOGFILE"
+}
+
