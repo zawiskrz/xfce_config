@@ -3,12 +3,12 @@
 install_environment_packages() {
   echo "🛠️ Instalacja pakietów środowiska systemowego..." | tee -a "$LOGFILE"
   sudo apt update
-sudo apt install -y lightdm \
+sudo apt install -y  \
     task-xfce-desktop task-polish-desktop synaptic package-update-indicator \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
-    language-pack-pl keyboard-configuration console-setup locales \
+    keyboard-configuration console-setup locales \
     openssh-server ufw gufw papirus-icon-theme \
-    unattended-upgrades policykit-1 gdebi-core \
+    unattended-upgrades gdebi-core \
     gnome-calculator gparted mintstick timeshift \
     xfce4-whiskermenu-plugin xfce4-notes ristretto mousepad \
     gvfs gvfs-backends gvfs-fuse xdg-user-dirs xdg-utils \
