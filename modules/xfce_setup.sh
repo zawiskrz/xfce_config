@@ -115,6 +115,8 @@ configure_flatpak() {
 
   # Instalacja aplikacji
   flatpak install -y flathub com.github.IsmaelMartinez.teams_for_linux \
+          app.ytmdesktop.ytmdesktop \
+          com.github.unrud.VideoDownloader \
           com.ktechpit.whatsie | tee -a "$LOGFILE"
 
   echo "✅ Aplikacje zostały zainstalowane." | tee -a "$LOGFILE"
