@@ -68,8 +68,7 @@ copy_user_config() {
   install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
   cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
   cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
-  sudo mkdir -p /usr/share/backgrounds/moje-tapety
-  sudo cp -f tapety/* /usr/share/backgrounds/moje-tapety/
+  sudo cp -R tapety "$HOME/"
 
 }
 
@@ -132,7 +131,7 @@ configure_redshift(){
   echo "📍 Tworzenie konfiguracji dla Szczecina..." | tee -a "$LOGFILE"
   mkdir -p ~/.config
 
-  cat <<EOF > /home/zawiskrz/.config/redshift.conf
+  cat <<EOF > ~/.config/redshift.conf
 [redshift]
 temp-day=5700
 temp-night=3500
@@ -144,16 +143,16 @@ lat=53.42894
 lon=14.55302
 EOF
 
-  echo "✅ Konfiguracja zapisana w /home/zawiskrz/.config/redshift.conf" | tee -a "$LOGFILE"
+  echo "✅ Konfiguracja zapisana w ~/.config/redshift.conf" | tee -a "$LOGFILE"
 
   # Dodanie do autostartu z opóźnieniem
-  AUTOSTART_DIR="/home/zawiskrz/.config/autostart"
+  AUTOSTART_DIR="$HOME/.config/autostart"
   mkdir -p "$AUTOSTART_DIR"
 
   cat <<EOF > "$AUTOSTART_DIR/redshift.desktop"
 [Desktop Entry]
 Type=Application
-Exec=sh -c "sleep 10 && redshift-gtk -c /home/zawiskrz/.config/redshift.conf"
+Exec=sh -c "sleep 10 && redshift-gtk -c ~/.config/redshift.conf"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
