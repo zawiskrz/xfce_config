@@ -25,7 +25,7 @@ install_user_apps() {
 
 remove_unwanted() {
   echo "🧪 Usuwanie zbędnych pakietów..." | tee -a "$LOGFILE"
-  sudo apt purge -y --auto-remove parole ristretto mousepad
+  sudo apt purge -y --auto-remove parole ristretto mousepad quodlibet
 }
 
 configure_bluetooth() {
