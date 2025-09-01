@@ -94,6 +94,20 @@ check-interval=daily
 EOF
 }
 
+configure_flatpak() {
+  echo "📦 Instalacja Flatpak i dodanie Flathub..." | tee -a "$LOGFILE"
+
+  # Instalacja Flatpak i integracji z GUI
+  sudo apt update
+  sudo apt install -y flatpak gnome-software-plugin-flatpak | tee -a "$LOGFILE"
+
+  # Dodanie repozytorium Flathub
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+  echo "✅ Flatpak skonfigurowany z Flathub." | tee -a "$LOGFILE"
+}
+
+
 configure_xfce() {
   install_packages
   remove_unwanted
@@ -102,7 +116,7 @@ configure_xfce() {
   configure_locale_and_keyboard
   copy_user_config
   configure_updates
-
+  configure_flatpak
   echo "✅ Konfiguracja XFCE zakończona!" | tee -a "$LOGFILE"
 }
 

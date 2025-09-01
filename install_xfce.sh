@@ -20,6 +20,7 @@ FILES_TO_SOURCE=(
   "./pycharm_setup.sh"
   "./rstudio_setup.sh"
   "./nvidia_setup.sh"
+  "./docker_setup.sh"
 )
 
 for file in "${FILES_TO_SOURCE[@]}"; do
@@ -47,7 +48,8 @@ options=(
   6 "Emacs" off
   7 "Samba + udostępnienia" off
   8 "Firewall" on
-  9 "Restart X11" off
+  9 "Docker" off
+  10 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -64,7 +66,8 @@ for choice in $choices; do
     6) echo "EMACS=true" >> "$CONFIG_FILE" ;;
     7) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
     8) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
-    9) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
+    9) echo "DOCKER=true" >> "$CONFIG_FILE" ;;
+    10) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -109,6 +112,11 @@ fi
 if [[ "$FIREWALL" == "true" ]]; then
   configure_ufw
 fi
+
+if [[ "$DOCKER" == "true" ]]; then
+  configure_docker
+fi
+
 
 if [[ "$lIGHTDM" == "true" ]]; then
   echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
