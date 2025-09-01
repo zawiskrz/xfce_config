@@ -131,7 +131,7 @@ configure_redshift(){
   echo "📍 Tworzenie konfiguracji dla Szczecina..." | tee -a "$LOGFILE"
   mkdir -p ~/.config
 
-  cat <<EOF > ~/.config/redshift.conf
+  cat <<EOF > /home/zawiskrz/.config/redshift.conf
 [redshift]
 temp-day=5700
 temp-night=3500
@@ -143,16 +143,16 @@ lat=53.42894
 lon=14.55302
 EOF
 
-  echo "✅ Konfiguracja zapisana w ~/.config/redshift.conf" | tee -a "$LOGFILE"
+  echo "✅ Konfiguracja zapisana w /home/zawiskrz/.config/redshift.conf" | tee -a "$LOGFILE"
 
-  # Opcjonalnie dodaj do autostartu
-  AUTOSTART_DIR="$HOME/.config/autostart"
+  # Dodanie do autostartu z opóźnieniem
+  AUTOSTART_DIR="/home/zawiskrz/.config/autostart"
   mkdir -p "$AUTOSTART_DIR"
 
   cat <<EOF > "$AUTOSTART_DIR/redshift.desktop"
 [Desktop Entry]
 Type=Application
-Exec=redshift-gtk -c ~/.config/redshift.conf
+Exec=sh -c "sleep 10 && redshift-gtk -c /home/zawiskrz/.config/redshift.conf"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -160,10 +160,10 @@ Name=Redshift
 Comment=Automatyczne dostosowanie barw ekranu
 EOF
 
-  echo "🔁 Dodano Redshift do autostartu." | tee -a "$LOGFILE"
+  echo "🔁 Dodano Redshift do autostartu z opóźnieniem." | tee -a "$LOGFILE"
   echo "🎉 Gotowe! Redshift działa z ustawieniami dla Szczecina." | tee -a "$LOGFILE"
-
 }
+
 
 configure_xfce() {
   install_environment_packages
