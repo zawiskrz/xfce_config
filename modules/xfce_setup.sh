@@ -169,7 +169,7 @@ EOF
 configure_xfce() {
   install_environment_packages
   install_user_apps
-  # remove_unwanted
+  remove_unwanted
   configure_bluetooth
   setup_pulseaudio_autostart
   configure_locale_and_keyboard
