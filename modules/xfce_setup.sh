@@ -6,7 +6,7 @@ install_environment_packages() {
   sudo apt install -y \
     task-xfce-desktop task-polish-desktop synaptic package-update-indicator \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
-    keyboard-configuration console-setup locales \
+    language-pack-pl keyboard-configuration console-setup locales \
     openssh-server ufw papirus-icon-theme \
     unattended-upgrades policykit-1 gdebi-core \
     gnome-calculator gparted mintstick 2>&1 | tee -a "$LOGFILE"
@@ -105,8 +105,8 @@ configure_flatpak() {
 
   # Instalacja Flatpak i integracji z GUI
   sudo apt update
-  sudo apt install -y flatpak gnome-software gnome-software-plugin-flatpak | tee -a "$LOGFILE"
-
+  sudo apt install -y flatpak  | tee -a "$LOGFILE"
+  # duże zuzucie RAMu po instalacji gnome-software gnome-software-plugin-flatpak
   # Dodanie repozytorium Flathub
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
