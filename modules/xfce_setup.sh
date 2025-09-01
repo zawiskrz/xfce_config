@@ -3,12 +3,12 @@
 install_environment_packages() {
   echo "🛠️ Instalacja pakietów środowiska systemowego..." | tee -a "$LOGFILE"
   sudo apt update
-sudo apt install -y  \
+  sudo apt install -y  \
     task-xfce-desktop task-polish-desktop \
     synaptic package-update-indicator \
     bluez blueman pulseaudio-module-bluetooth \
     openssh-server ufw gufw papirus-icon-theme \
-    unattended-upgrades gdebi-core \
+    gdebi-core \
     mintstick timeshift \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
@@ -25,7 +25,7 @@ install_user_apps() {
 
 remove_unwanted() {
   echo "🧪 Usuwanie zbędnych pakietów..." | tee -a "$LOGFILE"
-  sudo apt purge -y --auto-remove parole quod-libet ristretto mousepad
+  sudo apt purge -y --auto-remove parole ristretto mousepad
 }
 
 configure_bluetooth() {
