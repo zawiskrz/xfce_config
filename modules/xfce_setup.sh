@@ -105,7 +105,7 @@ configure_flatpak() {
 
   # Instalacja Flatpak i integracji z GUI
   sudo apt update
-  sudo apt install -y flatpak gnome-software-plugin-flatpak | tee -a "$LOGFILE"
+  sudo apt install -y flatpak gnome-software gnome-software-plugin-flatpak | tee -a "$LOGFILE"
 
   # Dodanie repozytorium Flathub
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
