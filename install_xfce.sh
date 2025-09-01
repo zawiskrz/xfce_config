@@ -41,14 +41,14 @@ sudo apt install -y dialog 2>&1 | tee -a "$LOGFILE"
 cmd=(dialog --separate-output --checklist "Wybierz komponenty do instalacji:" 22 76 16)
 options=(
   1 "Środowisko XFCE" on
-  2 "Sterowniki NVIDIA" off
-  3 "CUDA Toolkit" off
-  4 "PyCharm" off
-  5 "RStudio" off
-  6 "Emacs" off
-  7 "Samba + udostępnienia" off
-  8 "Firewall" on
-  9 "Docker" off
+  2 "[PROGRAMOWANIE] RStudio" off
+  3 "[PROGRAMOWANIE] PyCharm" off
+  4 "[PROGRAMOWANIE] Emacs" off
+  5 "[SYSTEM] Samba + udostępnienia" off
+  6 "[SYSTEM] Firewall" on
+  7 "[SYSTEM] Docker" off
+  8 "[SYSTEM] Sterowniki NVIDIA" off
+  9 "[SYSTEM] CUDA Toolkit" off
   10 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -59,14 +59,14 @@ echo "# Konfiguracja instalatora XFCE" > "$CONFIG_FILE"
 for choice in $choices; do
   case $choice in
     1) echo "XFCE=true" >> "$CONFIG_FILE" ;;
-    2) echo "NVIDIA=true" >> "$CONFIG_FILE" ;;
-    3) echo "CUDA=true" >> "$CONFIG_FILE" ;;
-    4) echo "PYCHARM=true" >> "$CONFIG_FILE" ;;
-    5) echo "RSTUDIO=true" >> "$CONFIG_FILE" ;;
-    6) echo "EMACS=true" >> "$CONFIG_FILE" ;;
-    7) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
-    8) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
-    9) echo "DOCKER=true" >> "$CONFIG_FILE" ;;
+    2) echo "RSTUDIO=true" >> "$CONFIG_FILE" ;;
+    3) echo "PYCHARM=true" >> "$CONFIG_FILE" ;;
+    4) echo "EMACS=true" >> "$CONFIG_FILE" ;;
+    5) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
+    6) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
+    7) echo "DOCKER=true" >> "$CONFIG_FILE" ;;
+    8) echo "NVIDIA=true" >> "$CONFIG_FILE" ;;
+    9) echo "CUDA=true" >> "$CONFIG_FILE" ;;
     10) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
