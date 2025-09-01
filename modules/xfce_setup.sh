@@ -3,7 +3,7 @@
 install_environment_packages() {
   echo "🛠️ Instalacja pakietów środowiska systemowego..." | tee -a "$LOGFILE"
   sudo apt update
-  sudo apt install -y \
+  sudo apt install -y lightm \
     task-xfce-desktop task-polish-desktop synaptic package-update-indicator \
     bluez blueman pulseaudio pulseaudio-utils pulseaudio-module-bluetooth rfkill \
     language-pack-pl keyboard-configuration console-setup locales \
