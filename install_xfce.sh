@@ -44,10 +44,10 @@ options=(
   2 "[PROGRAMOWANIE] RStudio" off
   3 "[PROGRAMOWANIE] PyCharm" off
   4 "[PROGRAMOWANIE] Emacs" off
-  5 "[SYSTEM] Samba + udostępnienia" off
+  5 "[SYSTEM] Samba" off
   6 "[SYSTEM] Firewall" on
   7 "[SYSTEM] Docker" off
-  8 "[SYSTEM] Sterowniki NVIDIA" off
+  8 "[SYSTEM] NVIDIA" off
   9 "[SYSTEM] CUDA Toolkit" off
   10 "Restart X11" off
 )
