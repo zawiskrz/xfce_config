@@ -73,7 +73,7 @@ if [[ "$SAMBA" == "true" ]]; then
   #Koniecznie należy podać hasło dla użytkownia
   read -s -p "🔑 Podaj hasło dla użytkownika Samba: " SAMBA_PASS
   echo
-  source  ".modules/smb_setup.sh"
+  source  "./modules/smb_setup.sh"
   configure_smb
 fi
 
