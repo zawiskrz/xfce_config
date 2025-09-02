@@ -1,0 +1,13 @@
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+    "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
+<!-- Do not edit manually - generated and managed by xdg-desktop-menu -->
+<Menu>
+    <Name>Applications</Name>
+<Menu>
+    <Name>webapps-webapps</Name>
+    <Directory>webapps-webapps.directory</Directory>
+    <Include>
+        <Filename>WebApp-OneNote9950.desktop</Filename>
+    </Include>
+</Menu>
+</Menu>

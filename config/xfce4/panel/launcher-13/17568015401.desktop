@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=OneNote
+Comment=Aplikacja internetowa
+Icon=/home/zawiskrz/.local/share/ice/icons/OneNote.png
+Exec=sh -c 'XAPP_FORCE_GTKWINDOW_ICON="/home/zawiskrz/.local/share/ice/icons/OneNote.png" firefox --class WebApp-OneNote9950 --name WebApp-OneNote9950 --profile /home/zawiskrz/.local/share/ice/firefox/OneNote9950 --no-remote "https://www.onenote.com/notebooks?wdoriginondc&auth=1"'
+Actions=
+MimeType=text/html;text/xml;application/xhtml_xml;
+Categories=GTK;Network;WebApps;webapps-webapps;
+StartupNotify=true
+StartupWMClass=WebApp-OneNote9950
+X-XFCE-Source=file:///home/zawiskrz/.local/share/applications/WebApp-OneNote9950.desktop

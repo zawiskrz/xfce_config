@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name[pl]=Mousam
+Name=Mousam
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=mousam io.github.amit9838.mousam
+Comment=Weather at a glance
+Icon=io.github.amit9838.mousam
+Terminal=false
+Type=Application
+Categories=Application;Utility;GTK;
+Keywords=Weather;Mousam;Rain;Cloud;Forecast;GTK4;Python;temperature;
+StartupNotify=true
+X-Flatpak=io.github.amit9838.mousam
+X-XFCE-Source=file:///var/lib/flatpak/app/io.github.amit9838.mousam/x86_64/stable/daf1d19c9bc087c98c006d51fea5ad27fe2e6db6d3c10f498799b85c71b1f505/export/share/applications/io.github.amit9838.mousam.desktop

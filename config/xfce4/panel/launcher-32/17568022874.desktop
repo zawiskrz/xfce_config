@@ -1,0 +1,18 @@
+[Desktop Entry]
+Version=1.0
+Name[pl]=Wygląd
+Name=Appearance
+Comment[pl]=Konfiguruje wygląd środowiska graficznego
+Comment=Customize the look of your desktop
+Keywords[pl]=motywy;interfejs użytkownika;style;ikony;czcionki;wygładzanie;przyciąganie;podpiksel;subpiksel;renderowanie;ClearType;dpi;RGB;BGR;klawisze skrótów w menu;skróty klawiszowe;zdarzenie;dźwięki;skalowanie okna;HiDPI;wyświetlacz Retina;
+Keywords=themes;user interface;styles;icons;fonts;anti-aliasing;hinting;sub-pixel;subpixel;rendering;ClearType;DPI;RGB;BGR;menu accelerators;keyboard shortcuts;event;sounds;window scaling;HiDPI;Retina display;
+Exec=xfce4-appearance-settings
+Icon=org.xfce.settings.appearance
+Terminal=false
+Type=Application
+Categories=XFCE;GTK;Settings;DesktopSettings;X-XFCE-SettingsDialog;X-XFCE-PersonalSettings;
+StartupNotify=true
+OnlyShowIn=XFCE;
+X-XfcePluggable=true
+X-XfceHelpPage=appearance
+X-XFCE-Source=file:///usr/share/applications/xfce-ui-settings.desktop
