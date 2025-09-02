@@ -243,13 +243,11 @@ EOF
     echo "✅ Konfiguracja Compiz z Static Switcher zakończona pomyślnie!" | tee -a "$LOGFILE"
 }
 
-}
-
 
 configure_xfce() {
   install_environment_packages
   install_user_apps
-#  remove_unwanted
+  remove_unwanted
   install_webapp_manager
   configure_bluetooth
   setup_pulseaudio_autostart
