@@ -20,7 +20,7 @@ install_user_apps() {
     libreoffice-l10n-pl libreoffice-help-pl \
     wxmaxima python3 python3-pip python3-venv \
     mc htop wget curl \
-    remmina filezilla 2>&1 | tee -a "$LOGFILE"
+    remmina filezilla transmission 2>&1 | tee -a "$LOGFILE"
 }
 
 remove_unwanted() {
