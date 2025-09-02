@@ -44,29 +44,14 @@ done
 # Wykonanie instalacji na podstawie konfiguracji
 source "$CONFIG_FILE"
 
-if [[ "$XFCE" == "true" ]]; then
-  configure_xfce
-fi
-
-if [[ "$NVIDIA" == "true" ]]; then
-  configure_nvidia
-fi
-
-if [[ "$CUDA" == "true" ]]; then
-  configure_cuda
-fi
-
-if [[ "$PYCHARM" == "true" ]]; then
-  configure_pycharm
-fi
-
-if [[ "$RSTUDIO" == "true" ]]; then
- configure_rstudio
-fi
-
-if [[ "$EMACS" == "true" ]]; then
-  configure_emacs
-fi
+[[ "$XFCE" == "true" ]] && configure_xfce
+[[ "$NVIDIA" == "true" ]] && configure_nvidia
+[[ "$CUDA" == "true" ]] && configure_cuda
+[[ "$PYCHARM" == "true" ]] && configure_pycharm
+[[ "$RSTUDIO" == "true" ]] && configure_rstudio
+[[ "$EMACS" == "true" ]] && configure_emacs
+[[ "$FIREWALL" == "true" ]] && configure_ufw
+[[ "$DOCKER" == "true" ]] && configure_docker
 
 if [[ "$SAMBA" == "true" ]]; then
   SAMBA_USER="$(logname)"
@@ -76,15 +61,6 @@ if [[ "$SAMBA" == "true" ]]; then
   source  "./modules/smb_setup.sh"
   configure_smb
 fi
-
-if [[ "$FIREWALL" == "true" ]]; then
-  configure_ufw
-fi
-
-if [[ "$DOCKER" == "true" ]]; then
-  configure_docker
-fi
-
 
 if [[ "$lIGHTDM" == "true" ]]; then
   echo "🔄 Restart LightDM..." | tee -a "$LOGFILE"
