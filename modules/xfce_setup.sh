@@ -56,7 +56,7 @@ install_webapp_manager() {
 
 remove_unwanted() {
   echo "🧪 Usuwanie zbędnych pakietów..." | tee -a "$LOGFILE"
-  sudo apt remove -y --auto-remove parole ristretto mousepad quodlibet thunar
+  sudo apt remove -y --auto-remove parole ristretto mousepad quodlibet
 }
 
 configure_bluetooth() {
