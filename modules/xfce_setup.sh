@@ -8,8 +8,8 @@ install_environment_packages() {
     synaptic package-update-indicator \
     bluez blueman pulseaudio-module-bluetooth rfkill \
     openssh-server ufw gufw papirus-icon-theme \
-    gdebi-core \
-    mintstick timeshift \
+    gdebi-core unattended-upgrades apt-listchanges \
+    mintstick timeshift redshift redshift-gtk powermgmt-base \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
 
@@ -63,42 +63,66 @@ configure_locale_and_keyboard() {
   chmod +x ~/.xprofile
 }
 
+
 copy_user_config() {
   echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
-  install -d ~/.config/gtk-3.0 ~/.local/share/rhythmbox ~/tapety
-  cp -f config/gtk-3.0/* ~/.config/gtk-3.0/
-  cp -f local/rhythmbox/* ~/.local/share/rhythmbox/
-  sudo cp -R tapety "$HOME/"
+  install -d "/home/$(logname)/.config" \
+            "/home/$(logname)/.local/share/rhythmbox" \
+            "home/$(logname)/tapety"
 
-}
-
-configure_updates() {
+  cp -R config/* "/home/$(logname)/.config"
+  cp -f local/rhythmbox/* "/home/$(logname)/.local/share/rhythmbox/"
+  sudo cp -R tapety "/home/$(logname)/"
   echo "🔄 Konfiguracja automatycznych aktualizacji..." | tee -a "$LOGFILE"
 
-  # Aktywacja unattended-upgrades
-  sudo dpkg-reconfigure -plow unattended-upgrades
-
-  # Dodanie package-update-indicator do autostartu
-  mkdir -p ~/.config/autostart
-  tee ~/.config/autostart/package-update-indicator.desktop > /dev/null <<EOF
-[Desktop Entry]
-Type=Application
-Exec=package-update-indicator
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-Name=Aktualizacje systemu
-Comment=Powiadomienia o dostępnych aktualizacjach
-EOF
-
-  # Ustawienie Synaptic jako domyślnego menedżera aktualizacji
-  mkdir -p ~/.config/package-update-indicator
-  tee ~/.config/package-update-indicator/settings.conf > /dev/null <<EOF
-[General]
-update-viewer=synaptic-pkexec
-check-interval=daily
-EOF
 }
+
+setup_unattended_upgrades() {
+    set -e  # Zatrzymaj skrypt przy pierwszym błędzie
+
+    echo "📁 Tworzenie pliku 50unattended-upgrades..." | tee -a "$LOGFILE"
+    sudo tee /etc/apt/apt.conf.d/50unattended-upgrades > /dev/null <<EOF
+Unattended-Upgrade::Allowed-Origins {
+    "Debian stable";
+    "Debian stable-updates";
+    "Debian-security stable-security";
+};
+
+Unattended-Upgrade::Package-Blacklist {
+};
+
+Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::Automatic-Reboot-Time "02:00";
+EOF
+    echo "✔️ Plik 50unattended-upgrades utworzony." | tee -a "$LOGFILE"
+
+    echo "🕒 Tworzenie pliku 20auto-upgrades..." | tee -a "$LOGFILE"
+    sudo tee /etc/apt/apt.conf.d/20auto-upgrades > /dev/null <<EOF
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::AutocleanInterval "7";
+APT::Periodic::Unattended-Upgrade "1";
+EOF
+    echo "✔️ Plik 20auto-upgrades utworzony." | tee -a "$LOGFILE"
+
+    echo "🚀 Włączanie i restartowanie usługi..." | tee -a "$LOGFILE"
+    sudo systemctl enable unattended-upgrades 2>&1 | tee -a "$LOGFILE"
+    sudo systemctl restart unattended-upgrades 2>&1 | tee -a "$LOGFILE"
+    echo "✔️ Usługa unattended-upgrades aktywna." | tee -a "$LOGFILE"
+
+    echo "🔍 Test działania (tryb debugowania)..." | tee -a "$LOGFILE"
+    if sudo unattended-upgrade -d 2>&1 | tee -a "$LOGFILE"; then
+        echo "✅ Test zakończony pomyślnie." | tee -a "$LOGFILE"
+    else
+        echo "⚠️ Test zakończony z błędami — sprawdź logi." | tee -a "$LOGFILE"
+    fi
+
+    echo "📜 Logi: /var/log/unattended-upgrades/" | tee -a "$LOGFILE"
+    echo "✅ Konfiguracja zakończona pomyślnie!" | tee -a "$LOGFILE"
+}
+
+
+
 
 configure_flatpak() {
   echo "📦 Instalacja Flatpak i dodanie Flathub..." | tee -a "$LOGFILE"
@@ -124,45 +148,6 @@ configure_flatpak() {
 
 }
 
-configure_redshift(){
-  echo "🌇 Instalacja Redshift..." | tee -a "$LOGFILE"
-  sudo apt install -y redshift redshift-gtk | tee -a "$LOGFILE"
-
-  echo "📍 Tworzenie konfiguracji dla Szczecina..." | tee -a "$LOGFILE"
-  mkdir -p ~/.config
-
-  cat <<EOF > ~/.config/redshift.conf
-[redshift]
-temp-day=5700
-temp-night=3500
-transition=1
-brightness=0.9
-
-[manual]
-lat=53.42894
-lon=14.55302
-EOF
-
-  echo "✅ Konfiguracja zapisana w ~/.config/redshift.conf" | tee -a "$LOGFILE"
-
-  # Dodanie do autostartu z opóźnieniem
-  AUTOSTART_DIR="$HOME/.config/autostart"
-  mkdir -p "$AUTOSTART_DIR"
-
-  cat <<EOF > "$AUTOSTART_DIR/redshift.desktop"
-[Desktop Entry]
-Type=Application
-Exec=sh -c "sleep 10 && redshift-gtk -c ~/.config/redshift.conf"
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-Name=Redshift
-Comment=Automatyczne dostosowanie barw ekranu
-EOF
-
-  echo "🔁 Dodano Redshift do autostartu z opóźnieniem." | tee -a "$LOGFILE"
-  echo "🎉 Gotowe! Redshift działa z ustawieniami dla Szczecina." | tee -a "$LOGFILE"
-}
 
 
 configure_xfce() {
@@ -173,9 +158,8 @@ configure_xfce() {
   setup_pulseaudio_autostart
   configure_locale_and_keyboard
   copy_user_config
-  configure_updates
+  setup_unattended_upgrades
   configure_flatpak
-  configure_redshift
   echo "✅ Konfiguracja XFCE zakończona!" | tee -a "$LOGFILE"
 }
 
