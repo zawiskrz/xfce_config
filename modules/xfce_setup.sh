@@ -11,6 +11,8 @@ install_environment_packages() {
     gdebi-core unattended-upgrades apt-listchanges \
     mintstick timeshift redshift redshift-gtk powermgmt-base \
     libxapp1 gir1.2-xapp-1.0 xapps-common python3-xapp gdebi \
+    libimobiledevice-1.0-6 libimobiledevice-utils usbmuxd ifuse \
+    gvfs gvfs-backends gvfs-fuse nautilus \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
 
@@ -53,7 +55,7 @@ install_webapp_manager() {
 
 remove_unwanted() {
   echo "🧪 Usuwanie zbędnych pakietów..." | tee -a "$LOGFILE"
-  sudo apt purge -y --auto-remove parole ristretto mousepad quodlibet
+  sudo apt purge -y --auto-remove parole ristretto mousepad quodlibet thunar
 }
 
 configure_bluetooth() {
@@ -103,6 +105,32 @@ copy_user_config() {
   sudo cp -R tapety "/home/$(logname)/"
   echo "🔄 Konfiguracja automatycznych aktualizacji..." | tee -a "$LOGFILE"
 
+}
+
+setup_ipad_support() {
+    set -e  # Zatrzymaj skrypt przy pierwszym błędzie
+
+    echo "📱 Rozpoczynam konfigurację obsługi iPada w Debianie XFCE..." | tee -a "$LOGFILE"
+
+
+    # 📁 Tworzenie katalogu montowania dla ręcznego użycia ifuse
+    echo "📁 Tworzenie katalogu ~/ipad jako punkt montowania..." | tee -a "$LOGFILE"
+    mkdir -p "/home/$(logname)/ipad"
+    echo "✔️ Katalog ~/ipad utworzony." | tee -a "$LOGFILE"
+
+    # 🔍 Test obecności narzędzi
+    echo "🔍 Sprawdzanie dostępności poleceń..." | tee -a "$LOGFILE"
+    for cmd in ideviceinfo ifuse usbmuxd; do
+        if command -v "$cmd" >/dev/null; then
+            echo "✅ $cmd dostępne." | tee -a "$LOGFILE"
+        else
+            echo "❌ $cmd nie znaleziono — sprawdź instalację." | tee -a "$LOGFILE"
+        fi
+    done
+
+    echo "📜 Upewnij się, że po podłączeniu iPada zaakceptujesz komunikat 'Zaufaj temu komputerowi' na urządzeniu." | tee -a "$LOGFILE"
+    echo "📁 Po podłączeniu możesz ręcznie zamontować iPada poleceniem: ifuse ~/ipad" | tee -a "$LOGFILE"
+    echo "✅ Konfiguracja zakończona pomyślnie!" | tee -a "$LOGFILE"
 }
 
 setup_unattended_upgrades() {
@@ -182,6 +210,7 @@ configure_xfce() {
   install_environment_packages
   install_user_apps
   remove_unwanted
+  install_webapp_manager
   configure_bluetooth
   setup_pulseaudio_autostart
   configure_locale_and_keyboard
