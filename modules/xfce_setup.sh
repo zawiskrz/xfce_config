@@ -13,6 +13,7 @@ install_environment_packages() {
     libxapp1 gir1.2-xapp-1.0 xapps-common python3-xapp gdebi \
     libimobiledevice-1.0-6 libimobiledevice-utils usbmuxd ifuse \
     gvfs gvfs-backends gvfs-fuse nautilus \
+    compiz compiz-plugins compizconfig-settings-manager fusion-icon \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
 
@@ -85,9 +86,6 @@ configure_locale_and_keyboard() {
   sudo sed -i 's/^# pl_PL.UTF-8 UTF-8/pl_PL.UTF-8 UTF-8/' /etc/locale.gen
   sudo locale-gen
   sudo update-locale LANG=pl_PL.UTF-8
-  sudo localectl set-locale LANG=pl_PL.UTF-8
-  sudo localectl set-keymap pl
-  sudo localectl set-x11-keymap pl pc105 legacy
 
   echo 'setxkbmap -model pc105 -layout pl -variant legacy' >> ~/.xprofile
   chmod +x ~/.xprofile
@@ -204,6 +202,37 @@ configure_flatpak() {
 
 }
 
+setup_compiz_for_xfce() {
+    set -e  # Zatrzymaj skrypt przy pierwszym błędzie
+
+    echo "🎨 Instalacja Compiz i podstawowych komponentów..." | tee -a "$LOGFILE"
+
+    echo "🧱 Tworzenie katalogu konfiguracyjnego Compiz..." | tee -a "$LOGFILE"
+    install -d "/home/$(logname)/.config/compiz" | tee -a "$LOGFILE"
+
+    echo "🧩 Ustawianie lekkiego zestawu wtyczek..." | tee -a "$LOGFILE"
+    gsettings set org.compiz.core:/org/compiz/profiles/xfce/plugins/core/ active-plugins "['core', 'composite', 'opengl', 'move', 'resize', 'place', 'decoration', 'mousepoll', 'grid']" 2>&1 | tee -a "$LOGFILE"
+
+    echo "🖥️ Konfiguracja XFCE do używania Compiz jako menedżera okien..." | tee -a "$LOGFILE"
+    xfconf-query -c xfwm4 -p /general/replace -s false 2>&1 | tee -a "$LOGFILE"
+    xfconf-query -c xfce4-session -p /sessions/XFCE/Client0_Command -s "compiz" 2>&1 | tee -a "$LOGFILE"
+
+    echo "🧠 Dodawanie Fusion Icon do autostartu..." | tee -a "$LOGFILE"
+    mkdir -p "/home/$(logname)/.config/autostart"
+    cat <<EOF > "/home/$(logname)/.config/autostart/fusion-icon.desktop"
+[Desktop Entry]
+Type=Application
+Exec=fusion-icon
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Fusion Icon
+Comment=Compiz tray manager
+EOF
+
+    echo "🚀 Restartowanie sesji XFCE może być wymagane, aby Compiz przejął kontrolę nad oknami." | tee -a "$LOGFILE"
+    echo "✅ Konfiguracja Compiz zakończona pomyślnie!" | tee -a "$LOGFILE"
+}
 
 
 configure_xfce() {
@@ -217,6 +246,7 @@ configure_xfce() {
   copy_user_config
   setup_unattended_upgrades
   configure_flatpak
+  setup_compiz_for_xfce
   echo "✅ Konfiguracja XFCE zakończona!" | tee -a "$LOGFILE"
 }
 
