@@ -11,7 +11,7 @@ PLAYONLINUX_URL="https://www.playonlinux.com/script_files/PlayOnLinux/4.3.4/Play
 CUDA_KEYRING_URL="https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb"
 ONEAPI_INSTALLER="l_BaseKit_p_2025.1.0.495_offline.sh"
 ONEAPI_URL="https://registrationcenter-download.intel.com/akdlm/irc_nas/19184/${ONEAPI_INSTALLER}"
-WEB_APP_MANAGER="webapp-manager.deb http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_1.4.3_all.deb"
+WEB_APP_MANAGER="http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_1.4.3_all.deb"
 
 FILES_TO_SOURCE=(
   "./modules/ufw_setup.sh"

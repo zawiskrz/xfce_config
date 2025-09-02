@@ -33,7 +33,7 @@ install_webapp_manager() {
 
     # 🔽 Pobierz najnowszy pakiet z repozytorium Linux Mint
     echo "📥 Pobieranie pakietu webapp-manager_1.4.3_all.deb..." | tee -a "$LOGFILE"
-    wget -O "$WEB_APP_MANAGER" 2>&1 | tee -a "$LOGFILE"
+    wget "$WEB_APP_MANAGER" -O webapp-manager.deb  2>&1 | tee -a "$LOGFILE"
 
     # 🧱 Instalacja WebApp Managera
     echo "📦 Instalacja WebApp Managera z pobranego pakietu..." | tee -a "$LOGFILE"
