@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=YTMDesktop
+Icon=app.ytmdesktop.ytmdesktop
+Encoding=UTF-8
+Type=Application
+Terminal=false
+Categories=AudioVideo;Utility
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=start-ytmdesktop --file-forwarding app.ytmdesktop.ytmdesktop @@u %U @@
+X-Flatpak=app.ytmdesktop.ytmdesktop
+X-XFCE-Source=file:///var/lib/flatpak/app/app.ytmdesktop.ytmdesktop/x86_64/stable/d01e83dde689a559b8f4fb6e4104c3caf7998cdf13cd2dc61854210e856cc3ae/export/share/applications/app.ytmdesktop.ytmdesktop.desktop

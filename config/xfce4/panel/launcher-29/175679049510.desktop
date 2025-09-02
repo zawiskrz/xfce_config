@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=PyCharm Community
+Exec=/opt/pycharm/bin/pycharm
+Icon=/opt/pycharm/bin/pycharm.png
+Type=Application
+Categories=Development;IDE;
+X-XFCE-Source=file:///usr/share/applications/pycharm.desktop

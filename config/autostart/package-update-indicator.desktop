@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=package-update-indicator
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Aktualizacje systemu
+Comment=Powiadomienia o dostępnych aktualizacjach

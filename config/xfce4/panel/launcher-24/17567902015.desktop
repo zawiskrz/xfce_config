@@ -1,0 +1,26 @@
+[Desktop Entry]
+Version=1.0
+Name[pl]=Shotwell
+Name=Shotwell
+GenericName[pl]=Menedżer zdjęć
+GenericName=Photo Manager
+Comment[pl]=Organizowanie zdjęć
+Comment=Organize your photos
+Keywords[pl]=album;aparat;aparaty;kamera;kamery;kadruj;kadrowanie;przytnij;przycinanie;modyfikacja;modyfikuj;edycja;edytuj;uwydatnij;uwydatnianie;ulepsz;ulepszanie;wyeksportuj;eksport;galeria;obraz;obrazy;obrazek;obrazki;zaimportuj;import;zorganizuj;organizacja;zdjęcie;fotografia;zdjęcia;fotografie;wydrukuj;drukowanie;opublikuj;publikacja;publikowanie;obróć;obracanie;obrót;udostępnij;udostępnianie;współdziel;współdzielenie;etykiety;znaczniki;tagi;tagowanie;filmy;wideo;filmiki;flickr;picasa;youtube;jutube;piwigo;
+Keywords=album;camera;cameras;crop;edit;enhance;export;gallery;image;images;import;organize;photo;photographs;photos;picture;pictures;photography;print;publish;rotate;share;tags;video;flickr;picasa;youtube;piwigo;
+Exec=shotwell %U
+Icon=org.gnome.Shotwell
+Terminal=false
+Type=Application
+MimeType=x-content/image-dcf;
+Categories=Graphics;Photography;GNOME;GTK;
+X-GIO-NoFuse=true
+X-GNOME-Gettext-Domain=shotwell
+X-GNOME-FullName=Shotwell Photo Manager
+Actions=profile-browser;
+X-XFCE-Source=file:///usr/share/applications/org.gnome.Shotwell.desktop
+
+[Desktop Action profile-browser]
+Name[pl]=Zarządzanie profilami programu Shotwell
+Name=Manage Different Profiles In Shotwell
+Exec=shotwell -b

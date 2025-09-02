@@ -1,0 +1,18 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Exec=exo-open --launch MailReader %u
+Icon=org.xfce.mailreader
+StartupNotify=true
+Terminal=false
+Categories=Network;X-XFCE;X-Xfce-Toplevel;
+Keywords[pl]=e-mail;poczta;skrzynka odbiorcza;wiadomość;komunikacja;
+Keywords=email;mail;inbox;message;communication;
+OnlyShowIn=XFCE;
+X-XFCE-MimeType=x-scheme-handler/mailto;
+X-AppStream-Ignore=True
+Name[pl]=Czytnik poczty
+Name=Mail Reader
+Comment[pl]=Odbiera i wysyła pocztę elektroniczną
+Comment=Read your email
+X-XFCE-Source=file:///usr/share/applications/xfce4-mail-reader.desktop

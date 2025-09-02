@@ -1,0 +1,37 @@
+[Desktop Entry]
+Name=WhatSie
+GenericName=Qt WhatsApp Web Client
+Comment=A WhatsApp Web Client using the QT framework
+Icon=com.ktechpit.whatsie
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=whatsie --file-forwarding com.ktechpit.whatsie @@u %u @@
+Terminal=false
+Type=Application
+Categories=Chat;Network;InstantMessaging;Qt;
+Keywords=WhatSie;WhatsApp;
+StartupWMClass=whatsie
+StartupNotify=true
+MimeType=x-scheme-handler/whatsapp;
+X-GNOME-UsesNotifications=true
+Actions=Chat;Settings;Theme;Lock;About;
+X-Flatpak=com.ktechpit.whatsie
+X-XFCE-Source=file:///var/lib/flatpak/app/com.ktechpit.whatsie/x86_64/stable/9578fdcd1ccd6ee6e864042cbda51200bde0101b0bacc78bbd20a426feada9fd/export/share/applications/com.ktechpit.whatsie.desktop
+
+[Desktop Action Chat]
+Name=New Chat
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=whatsie com.ktechpit.whatsie -n
+
+[Desktop Action Theme]
+Name=Toggle theme
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=whatsie com.ktechpit.whatsie -t
+
+[Desktop Action Settings]
+Name=Settings
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=whatsie com.ktechpit.whatsie -s
+
+[Desktop Action Lock]
+Name=Lock
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=whatsie com.ktechpit.whatsie -l
+
+[Desktop Action About]
+Name=About
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=whatsie com.ktechpit.whatsie -i

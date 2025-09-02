@@ -1,0 +1,20 @@
+[Desktop Entry]
+Name[pl]=Rhythmbox
+Name=Rhythmbox
+GenericName[pl]=Odtwarzacz muzyki
+GenericName=Music Player
+X-GNOME-FullName=Rhythmbox Music Player
+Comment[pl]=Odtwarzanie i organizowanie kolekcji muzycznej
+Comment=Play and organize your music collection
+Keywords[pl]=Dźwięk;Audio;Piosenka;Utwór;MP3;Ogg;Vorbis;FLAC;CD;Płyta;Podcast;Podkasty;MTP;iPod;Playlista;Lista;odtwarzania;M3U;PLS;XSPF;Last.fm;Libre.fm;Lastfm;Librefm;Magnatune;SoundCloud;UPnP;DLNA;DAAP;MPRIS;LIRC;ReplayGain;Radio;
+Keywords=Audio;Song;MP3;CD;Podcast;MTP;iPod;Playlist;Last.fm;UPnP;DLNA;Radio;
+Exec=rhythmbox %U
+Terminal=false
+Type=Application
+Icon=org.gnome.Rhythmbox3
+X-GNOME-DocPath=rhythmbox/rhythmbox.xml
+Categories=GNOME;GTK;AudioVideo;Audio;Player;
+MimeType=application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;audio/x-it;audio/x-mod;audio/x-s3m;audio/x-stm;audio/x-xm;
+StartupNotify=true
+X-GNOME-UsesNotifications=true
+X-XFCE-Source=file:///usr/share/applications/org.gnome.Rhythmbox3.desktop

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=sh -c "sleep 10 && redshift-gtk -c ~/.config/redshift.conf"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Redshift
+Comment=Automatyczne dostosowanie barw ekranu
