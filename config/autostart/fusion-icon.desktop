@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=fusion-icon
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Fusion Icon
+Comment=Compiz tray manager
