@@ -29,6 +29,10 @@ configure_rstudio(){
   wget "$RSTUDIO_URL" -O rstudio.deb | tee -a "$LOGFILE"
   sudo gdebi -n rstudio.deb | tee -a "$LOGFILE"
 
+      # 🧹 Sprzątanie
+  echo "🧹 Usuwanie pobranego pliku .deb..." | tee -a "$LOGFILE"
+  rm -f rstudio.deb
+
   # Weryfikacja wersji R
   echo "📋 Zainstalowana wersja R:" | tee -a "$LOGFILE"
   R --version | tee -a "$LOGFILE"

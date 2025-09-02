@@ -10,6 +10,7 @@ install_environment_packages() {
     openssh-server ufw gufw papirus-icon-theme \
     gdebi-core unattended-upgrades apt-listchanges \
     mintstick timeshift redshift redshift-gtk powermgmt-base \
+    libxapp1 gir1.2-xapp-1.0 xapps-common python3-xapp gdebi \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
 
@@ -22,6 +23,33 @@ install_user_apps() {
     mc htop wget curl \
     remmina filezilla transmission 2>&1 | tee -a "$LOGFILE"
 }
+
+install_webapp_manager() {
+    set -e  # Zatrzymaj skrypt przy pierwszym błędzie
+
+    echo "🌐 Rozpoczynam instalację WebApp Managera..." | tee -a "$LOGFILE"
+
+    # 🔽 Pobierz najnowszy pakiet z repozytorium Linux Mint
+    echo "📥 Pobieranie pakietu webapp-manager_1.4.3_all.deb..." | tee -a "$LOGFILE"
+    wget -O "$WEB_APP_MANAGER" 2>&1 | tee -a "$LOGFILE"
+
+    # 🧱 Instalacja WebApp Managera
+    echo "📦 Instalacja WebApp Managera z pobranego pakietu..." | tee -a "$LOGFILE"
+    sudo gdebi -n webapp-manager.deb 2>&1 | tee -a "$LOGFILE"
+
+    # 🧹 Sprzątanie
+    echo "🧹 Usuwanie pobranego pliku .deb..." | tee -a "$LOGFILE"
+    rm -f webapp-manager.deb
+
+    # 🚀 Uruchomienie testowe
+    echo "🚀 Próba uruchomienia aplikacji..." | tee -a "$LOGFILE"
+    if command -v webapp-manager >/dev/null; then
+        echo "✅ WebApp Manager został pomyślnie zainstalowany i jest dostępny jako 'webapp-manager'." | tee -a "$LOGFILE"
+    else
+        echo "❌ Instalacja zakończona, ale aplikacja nie jest dostępna w PATH. Sprawdź logi." | tee -a "$LOGFILE"
+    fi
+}
+
 
 remove_unwanted() {
   echo "🧪 Usuwanie zbędnych pakietów..." | tee -a "$LOGFILE"
