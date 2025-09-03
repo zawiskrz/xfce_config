@@ -11,7 +11,7 @@ install_environment_packages() {
     gdebi-core unattended-upgrades apt-listchanges \
     mintstick timeshift redshift redshift-gtk powermgmt-base \
     libxapp1 gir1.2-xapp-1.0 xapps-common python3-xapp gdebi \
-    libimobiledevice-1.0-6 libimobiledevice-utils usbmuxd ifuse \
+    libimobiledevice-1.0-6 libimobiledevice-utils usbmuxd ifuse isc-dhcp-client \
     gvfs gvfs-backends gvfs-fuse nautilus \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
