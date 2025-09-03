@@ -39,7 +39,7 @@ configure_user_apps() {
   install_user_apps
   install_webapp_manager
   echo "🗂️ Kopiowanie konfiguracji rhythmbox..." | tee -a "$LOGFILE"
-  install -d "/home/$(logname)/.local/share/rhythmbox" \
+  install -d "/home/$(logname)/.local/share/rhythmbox"
   cp -f local/rhythmbox/* "/home/$(logname)/.local/share/rhythmbox/"
   echo "✅ Dodatkowe oprogramowanie użytkowe zostało zainstalowane i skonfigurowane." | tee -a "$LOGFILE"
 }
