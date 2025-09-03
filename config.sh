@@ -22,6 +22,8 @@ FILES_TO_SOURCE=(
   "./modules/rstudio_setup.sh"
   "./modules/nvidia_setup.sh"
   "./modules/docker_setup.sh"
+  "./modules/compiz_setup.sh"
+  "./modules/user_apps_setup.sh"
 )
 
 for file in "${FILES_TO_SOURCE[@]}"; do

@@ -11,15 +11,17 @@ sudo apt install -y dialog 2>&1 | tee -a "$LOGFILE"
 cmd=(dialog --separate-output --checklist "Wybierz komponenty do instalacji:" 22 76 16)
 options=(
   1 "XFCE" on
-  2 "[PROGRAMOWANIE] RStudio" off
-  3 "[PROGRAMOWANIE] PyCharm" off
-  4 "[PROGRAMOWANIE] Emacs" off
-  5 "[SYSTEM] Samba" off
-  6 "[SYSTEM] Firewall" on
-  7 "[SYSTEM] Docker" off
-  8 "[SYSTEM] NVIDIA" off
-  9 "[SYSTEM] CUDA Toolkit" off
-  10 "Restart X11" off
+  2 "USER APPLICATIONS" on
+  3 "[PROGRAMOWANIE] RStudio" off
+  4 "[PROGRAMOWANIE] PyCharm" off
+  5 "[PROGRAMOWANIE] Emacs" off
+  6 "[SYSTEM] Samba" off
+  7 "[SYSTEM] Firewall" on
+  8 "[SYSTEM] Docker" off
+  9 "[SYSTEM] NVIDIA" off
+  10 "[SYSTEM] CUDA Toolkit" off
+  11 "[SYSTEM] COMPIZ" off
+  12 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -29,15 +31,17 @@ echo "# Konfiguracja instalatora XFCE" > "$CONFIG_FILE"
 for choice in $choices; do
   case $choice in
     1) echo "XFCE=true" >> "$CONFIG_FILE" ;;
-    2) echo "RSTUDIO=true" >> "$CONFIG_FILE" ;;
-    3) echo "PYCHARM=true" >> "$CONFIG_FILE" ;;
-    4) echo "EMACS=true" >> "$CONFIG_FILE" ;;
-    5) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
-    6) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
-    7) echo "DOCKER=true" >> "$CONFIG_FILE" ;;
-    8) echo "NVIDIA=true" >> "$CONFIG_FILE" ;;
-    9) echo "CUDA=true" >> "$CONFIG_FILE" ;;
-    10) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
+    2) echo "USERAPPS=true" >> "$CONFIG_FILE" ;;
+    3) echo "RSTUDIO=true" >> "$CONFIG_FILE" ;;
+    4) echo "PYCHARM=true" >> "$CONFIG_FILE" ;;
+    5) echo "EMACS=true" >> "$CONFIG_FILE" ;;
+    6) echo "SAMBA=true" >> "$CONFIG_FILE" ;;
+    7) echo "FIREWALL=true" >> "$CONFIG_FILE" ;;
+    8) echo "DOCKER=true" >> "$CONFIG_FILE" ;;
+    9) echo "NVIDIA=true" >> "$CONFIG_FILE" ;;
+    10) echo "CUDA=true" >> "$CONFIG_FILE" ;;
+    11) echo "COMPIZ=true" >> "$CONFIG_FILE" ;;
+    12) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -45,12 +49,14 @@ done
 source "$CONFIG_FILE"
 
 [[ "$XFCE" == "true" ]] && configure_xfce
+[[ "$USERAPPS" == "true" ]] && configure_user_apps
 [[ "$NVIDIA" == "true" ]] && configure_nvidia
 [[ "$CUDA" == "true" ]] && configure_cuda
 [[ "$PYCHARM" == "true" ]] && configure_pycharm
 [[ "$RSTUDIO" == "true" ]] && configure_rstudio
 [[ "$EMACS" == "true" ]] && configure_emacs
 [[ "$FIREWALL" == "true" ]] && configure_ufw
+[[ "$COMPIZ" == "true" ]] && setup_compiz_for_xfce
 [[ "$DOCKER" == "true" ]] && configure_docker
 
 if [[ "$SAMBA" == "true" ]]; then

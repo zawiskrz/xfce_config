@@ -13,50 +13,14 @@ install_environment_packages() {
     libxapp1 gir1.2-xapp-1.0 xapps-common python3-xapp gdebi \
     libimobiledevice-1.0-6 libimobiledevice-utils usbmuxd ifuse \
     gvfs gvfs-backends gvfs-fuse nautilus \
-    compiz compiz-plugins compizconfig-settings-manager fusion-icon \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
 
-install_user_apps() {
-  echo "🎯 Instalacja dodatkowego oprogramowania użytkowego..." | tee -a "$LOGFILE"
-  sudo apt install -y \
-    menulibre thunderbird vlc calibre rhythmbox shotwell \
-    libreoffice-l10n-pl libreoffice-help-pl \
-    wxmaxima python3 python3-pip python3-venv \
-    mc htop wget curl \
-    remmina filezilla transmission 2>&1 | tee -a "$LOGFILE"
-}
-
-install_webapp_manager() {
-    set -e  # Zatrzymaj skrypt przy pierwszym błędzie
-
-    echo "🌐 Rozpoczynam instalację WebApp Managera..." | tee -a "$LOGFILE"
-
-    # 🔽 Pobierz najnowszy pakiet z repozytorium Linux Mint
-    echo "📥 Pobieranie pakietu webapp-manager_1.4.3_all.deb..." | tee -a "$LOGFILE"
-    wget "$WEB_APP_MANAGER" -O webapp-manager.deb  2>&1 | tee -a "$LOGFILE"
-
-    # 🧱 Instalacja WebApp Managera
-    echo "📦 Instalacja WebApp Managera z pobranego pakietu..." | tee -a "$LOGFILE"
-    sudo gdebi -n webapp-manager.deb 2>&1 | tee -a "$LOGFILE"
-
-    # 🧹 Sprzątanie
-    echo "🧹 Usuwanie pobranego pliku .deb..." | tee -a "$LOGFILE"
-    rm -f webapp-manager.deb
-
-    # 🚀 Uruchomienie testowe
-    echo "🚀 Próba uruchomienia aplikacji..." | tee -a "$LOGFILE"
-    if command -v webapp-manager >/dev/null; then
-        echo "✅ WebApp Manager został pomyślnie zainstalowany i jest dostępny jako 'webapp-manager'." | tee -a "$LOGFILE"
-    else
-        echo "❌ Instalacja zakończona, ale aplikacja nie jest dostępna w PATH. Sprawdź logi." | tee -a "$LOGFILE"
-    fi
-}
 
 
 remove_unwanted() {
   echo "🧪 Usuwanie zbędnych pakietów..." | tee -a "$LOGFILE"
-  sudo apt remove -y --auto-remove parole ristretto mousepad quodlibet
+  sudo apt remove -y --auto-remove parole ristretto mousepad quodlibethom
 }
 
 configure_bluetooth() {
@@ -95,12 +59,10 @@ configure_locale_and_keyboard() {
 copy_user_config() {
   echo "🗂️ Kopiowanie konfiguracji użytkownika..." | tee -a "$LOGFILE"
   install -d "/home/$(logname)/.config" \
-            "/home/$(logname)/.local/share/rhythmbox" \
             "home/$(logname)/tapety"
 
   cp -R config/* "/home/$(logname)/.config"
-  cp -f local/rhythmbox/* "/home/$(logname)/.local/share/rhythmbox/"
-  sudo cp -R tapety "/home/$(logname)/"
+  cp -R tapety "/home/$(logname)/"
   echo "🔄 Konfiguracja automatycznych aktualizacji..." | tee -a "$LOGFILE"
 
 }
@@ -202,60 +164,15 @@ configure_flatpak() {
 
 }
 
-setup_compiz_for_xfce() {
-    set -e  # Zatrzymaj skrypt przy błędzie
-
-    echo "🎨 Instalacja Compiz i komponentów..." | tee -a "$LOGFILE"
-
-    echo "🧱 Tworzenie katalogu konfiguracyjnego Compiz..." | tee -a "$LOGFILE"
-    install -d "/home/$(logname)/.config/compiz" | tee -a "$LOGFILE"
-
-    echo "🧩 Ustawianie lekkiego zestawu wtyczek..." | tee -a "$LOGFILE"
-    gsettings set org.compiz.core:/org/compiz/profiles/xfce/plugins/core/ active-plugins "['core', 'composite', 'opengl', 'move', 'resize', 'place', 'decoration', 'mousepoll', 'grid', 'staticswitcher']" 2>&1 | tee -a "$LOGFILE"
-
-    echo "🎛️ Konfiguracja Static Application Switcher..." | tee -a "$LOGFILE"
-    gsettings set org.compiz.staticswitcher:/org/compiz/profiles/xfce/plugins/staticswitcher/ show-preview false 2>&1 | tee -a "$LOGFILE"
-    gsettings set org.compiz.staticswitcher:/org/compiz/profiles/xfce/plugins/staticswitcher/ show-icons true 2>&1 | tee -a "$LOGFILE"
-    gsettings set org.compiz.staticswitcher:/org/compiz/profiles/xfce/plugins/staticswitcher/ background-color "#000000cc" 2>&1 | tee -a "$LOGFILE"
-
-    echo "⌨️ Przypisywanie skrótu Alt+Tab do przełączania okien..." | tee -a "$LOGFILE"
-    gsettings set org.compiz.staticswitcher:/org/compiz/profiles/xfce/plugins/staticswitcher/ next-key "<Alt>Tab" 2>&1 | tee -a "$LOGFILE"
-    gsettings set org.compiz.staticswitcher:/org/compiz/profiles/xfce/plugins/staticswitcher/ prev-key "<Shift><Alt>Tab" 2>&1 | tee -a "$LOGFILE"
-
-    echo "🖥️ Konfiguracja XFCE do używania Compiz jako menedżera okien..." | tee -a "$LOGFILE"
-    xfconf-query -c xfwm4 -p /general/replace -s false 2>&1 | tee -a "$LOGFILE"
-    xfconf-query -c xfce4-session -p /sessions/XFCE/Client0_Command -s "compiz" 2>&1 | tee -a "$LOGFILE"
-
-    echo "🧠 Dodawanie Fusion Icon do autostartu..." | tee -a "$LOGFILE"
-    mkdir -p "/home/$(logname)/.config/autostart"
-    cat <<EOF > "/home/$(logname)/.config/autostart/fusion-icon.desktop"
-[Desktop Entry]
-Type=Application
-Exec=fusion-icon
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-Name=Fusion Icon
-Comment=Compiz tray manager
-EOF
-
-    echo "🚀 Restartowanie sesji XFCE może być wymagane, aby Compiz przejął kontrolę nad oknami." | tee -a "$LOGFILE"
-    echo "✅ Konfiguracja Compiz z Static Switcher zakończona pomyślnie!" | tee -a "$LOGFILE"
-}
-
-
 configure_xfce() {
   install_environment_packages
-  install_user_apps
   remove_unwanted
-  install_webapp_manager
   configure_bluetooth
   setup_pulseaudio_autostart
   configure_locale_and_keyboard
   copy_user_config
   setup_unattended_upgrades
   configure_flatpak
-  setup_compiz_for_xfce
   echo "✅ Konfiguracja XFCE zakończona!" | tee -a "$LOGFILE"
 }
 
