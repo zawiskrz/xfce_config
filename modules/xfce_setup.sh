@@ -13,6 +13,7 @@ install_environment_packages() {
     libxapp1 gir1.2-xapp-1.0 xapps-common python3-xapp gdebi \
     libimobiledevice-1.0-6 libimobiledevice-utils usbmuxd ifuse isc-dhcp-client \
     network-manager network-manager-gnome \
+    firmware-iwlwifi firmware-realtek firmware-brcm80211 \
     gvfs gvfs-backends gvfs-fuse nautilus \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
