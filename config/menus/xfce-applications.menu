@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Menu
+  PUBLIC '-//freedesktop//DTD Menu 1.0//EN'
+  'http://standards.freedesktop.org/menu-spec/menu-1.0.dtd'>
+<Menu>
+	<Name>Xfce</Name>
+	<DefaultAppDirs />
+	<DefaultDirectoryDirs />
+	<DefaultMergeDirs />
+	<Include>
+		<Category>X-Xfce-Toplevel</Category>
+	</Include>
+	<MergeFile type="parent">/etc/xdg/menus/xfce-applications.menu</MergeFile>
+	<Menu>
+		<Name>Settings</Name>
+		<Directory>xfce-settings.directory</Directory>
+		<Menu>
+			<Name>Screensavers</Name>
+			<Directory>xfce-screensavers.directory</Directory>
+			<Layout>
+				<Merge type="menus" />
+				<Merge type="files" />
+			</Layout>
+		</Menu>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>xfce-settings-manager.desktop</Filename>
+			<Separator />
+			<Filename>blueman-adapters.desktop</Filename>
+			<Filename>xfce4-mime-settings.desktop</Filename>
+			<Filename>menulibre.desktop</Filename>
+			<Filename>xfce4-settings-editor.desktop</Filename>
+			<Filename>xfce-display-settings.desktop</Filename>
+			<Filename>xfce-keyboard-settings.desktop</Filename>
+			<Filename>gufw.desktop</Filename>
+			<Filename>blueman-manager.desktop</Filename>
+			<Filename>xfce-wm-settings.desktop</Filename>
+			<Filename>xfce4-power-manager-settings.desktop</Filename>
+			<Filename>xfce-mouse-settings.desktop</Filename>
+			<Filename>thunar-volman-settings.desktop</Filename>
+			<Filename>xfce-workspaces-settings.desktop</Filename>
+			<Filename>org.guido-berhoerster.code.package-update-indicator.preferences.desktop</Filename>
+			<Filename>panel-preferences.desktop</Filename>
+			<Filename>xfce4-notifyd-config.desktop</Filename>
+			<Filename>thunar-settings.desktop</Filename>
+			<Filename>xfce4-color-settings.desktop</Filename>
+			<Filename>xfce-backdrop-settings.desktop</Filename>
+			<Filename>xfce-session-settings.desktop</Filename>
+			<Filename>org.pulseaudio.pavucontrol.desktop</Filename>
+			<Filename>synaptic.desktop</Filename>
+			<Filename>xfce4-accessibility-settings.desktop</Filename>
+			<Filename>xfce-wmtweaks-settings.desktop</Filename>
+			<Filename>system-config-printer.desktop</Filename>
+			<Filename>org.xfce.mousepad-settings.desktop</Filename>
+			<Filename>xfce4-clipman-settings.desktop</Filename>
+			<Filename>xfce4-terminal-settings.desktop</Filename>
+			<Menuname>Screensavers</Menuname>
+			<Filename>xfce-ui-settings.desktop</Filename>
+			<Filename>nm-connection-editor.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Accessories</Name>
+		<Directory>Utility.directory</Directory>
+		<DirectoryDir>/home/zawiskrz/.local/share/desktop-directories</DirectoryDir>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>PlayOnLinux.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Accessories</Name>
+		<Directory>xfce-accessories.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>menulibre.desktop</Filename>
+			<Filename>xfce4-terminal-emulator.desktop</Filename>
+			<Filename>org.gnome.FileRoller.desktop</Filename>
+			<Filename>mintstick-format.desktop</Filename>
+			<Filename>xfce4-file-manager.desktop</Filename>
+			<Filename>thunar.desktop</Filename>
+			<Filename>xfce4-clipman.desktop</Filename>
+			<Filename>xfce4-taskmanager.desktop</Filename>
+			<Filename>mc.desktop</Filename>
+			<Filename>mcedit.desktop</Filename>
+			<Filename>io.github.amit9838.mousam.desktop</Filename>
+			<Filename>org.xfce.mousepad.desktop</Filename>
+			<Filename>xfce4-notes.desktop</Filename>
+			<Filename>xfce4-about.desktop</Filename>
+			<Filename>PlayOnLinux.desktop</Filename>
+			<Filename>com.playonlinux.PlayOnLinux4.desktop</Filename>
+			<Filename>org.gnome.Nautilus.desktop</Filename>
+			<Filename>xfce4-screenshooter.desktop</Filename>
+			<Filename>redshift-gtk.desktop</Filename>
+			<Filename>redshift.desktop</Filename>
+			<Filename>xfce4-run.desktop</Filename>
+			<Filename>thunar-bulk-rename.desktop</Filename>
+			<Filename>xfce4-sensors.desktop</Filename>
+			<Filename>xfce4-appfinder.desktop</Filename>
+			<Filename>xfburn.desktop</Filename>
+			<Filename>app.ytmdesktop.ytmdesktop.desktop</Filename>
+			<Filename>mintstick.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Education</Name>
+		<Directory>xfce-education.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>io.github.wxmaxima_developers.wxMaxima.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Graphics</Name>
+		<Directory>xfce-graphics.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>libreoffice-draw.desktop</Filename>
+			<Filename>org.xfce.ristretto.desktop</Filename>
+			<Filename>R.desktop</Filename>
+			<Filename>org.gnome.Shotwell.desktop</Filename>
+			<Filename>org.gnome.Shotwell-Viewer.desktop</Filename>
+			<Filename>xsane.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Games</Name>
+		<Directory>xfce-games.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Other</Name>
+		<Directory>xfce-other.directory</Directory>
+		<Include>
+			<Filename>user-dirs-update-gtk.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>nm-applet.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>panel-desktop-handler.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>_home_zawiskrz_programy_eclipse-installer_.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>geoclue-demo-agent.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>libreoffice-xsltfilter.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>xdg-desktop-portal-gtk.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>remmina-gnome.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>org.gnome.Shotwell.Auth.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>nautilus-autorun-software.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>gcr-viewer.desktop</Filename>
+		</Include>
+		<Include>
+			<Filename>gcr-prompter.desktop</Filename>
+		</Include>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>user-dirs-update-gtk.desktop</Filename>
+			<Filename>nm-applet.desktop</Filename>
+			<Filename>panel-desktop-handler.desktop</Filename>
+			<Filename>_home_zawiskrz_programy_eclipse-installer_.desktop</Filename>
+			<Filename>geoclue-demo-agent.desktop</Filename>
+			<Filename>libreoffice-xsltfilter.desktop</Filename>
+			<Filename>xdg-desktop-portal-gtk.desktop</Filename>
+			<Filename>remmina-gnome.desktop</Filename>
+			<Filename>org.gnome.Shotwell.Auth.desktop</Filename>
+			<Filename>nautilus-autorun-software.desktop</Filename>
+			<Filename>gcr-viewer.desktop</Filename>
+			<Filename>gcr-prompter.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>webapps-webapps</Name>
+		<Directory>webapps-webapps.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Network</Name>
+		<Directory>xfce-network.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>webapp-manager.desktop</Filename>
+			<Filename>xfce4-mail-reader.desktop</Filename>
+			<Filename>filezilla.desktop</Filename>
+			<Filename>com.google.Chrome.desktop</Filename>
+			<Filename>google-chrome.desktop</Filename>
+			<Filename>org.gnome.Shell.Extensions.GSConnect.desktop</Filename>
+			<Filename>org.gnome.Shell.Extensions.GSConnect.Preferences.desktop</Filename>
+			<Filename>thunderbird.desktop</Filename>
+			<Filename>xfce4-web-browser.desktop</Filename>
+			<Filename>firefox-esr.desktop</Filename>
+			<Filename>org.remmina.Remmina-file.desktop</Filename>
+			<Filename>org.remmina.Remmina.desktop</Filename>
+			<Filename>com.github.IsmaelMartinez.teams_for_linux.desktop</Filename>
+			<Filename>transmission-gtk.desktop</Filename>
+			<Filename>com.github.unrud.VideoDownloader.desktop</Filename>
+			<Filename>com.ktechpit.whatsie.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Multimedia</Name>
+		<Directory>xfce-multimedia.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>WebApp-AppleTV2200.desktop</Filename>
+			<Filename>WebApp-Canal8118.desktop</Filename>
+			<Filename>WebApp-Disney9995.desktop</Filename>
+			<Filename>io.github.quodlibet.ExFalso.desktop</Filename>
+			<Filename>WebApp-Max8994.desktop</Filename>
+			<Filename>WebApp-Netflix9773.desktop</Filename>
+			<Filename>org.xfce.Parole.desktop</Filename>
+			<Filename>WebApp-Player6737.desktop</Filename>
+			<Filename>WebApp-Prime0885.desktop</Filename>
+			<Filename>io.github.quodlibet.QuodLibet.desktop</Filename>
+			<Filename>org.gnome.Rhythmbox3.desktop</Filename>
+			<Filename>org.gnome.Rhythmbox3.device.desktop</Filename>
+			<Filename>org.pulseaudio.pavucontrol.desktop</Filename>
+			<Filename>WebApp-TVNGO9326.desktop</Filename>
+			<Filename>vlc.desktop</Filename>
+			<Filename>xfburn.desktop</Filename>
+			<Filename>WebApp-YouTube4158.desktop</Filename>
+			<Filename>app.ytmdesktop.ytmdesktop.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Science</Name>
+		<Directory>xfce-science.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>R.desktop</Filename>
+			<Filename>io.github.wxmaxima_developers.wxMaxima.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Office</Name>
+		<Directory>Office.directory</Directory>
+		<DirectoryDir>/home/zawiskrz/.local/share/desktop-directories</DirectoryDir>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>calibre-gui.desktop</Filename>
+			<Filename>calibre-ebook-edit.desktop</Filename>
+			<Filename>calibre-ebook-viewer.desktop</Filename>
+			<Filename>WebApp-GoogleBooks3774.desktop</Filename>
+			<Filename>libreoffice-startcenter.desktop</Filename>
+			<Filename>libreoffice-calc.desktop</Filename>
+			<Filename>libreoffice-draw.desktop</Filename>
+			<Filename>libreoffice-impress.desktop</Filename>
+			<Filename>libreoffice-math.desktop</Filename>
+			<Filename>libreoffice-writer.desktop</Filename>
+			<Filename>calibre-lrfviewer.desktop</Filename>
+			<Filename>menulibre-microsoft-excel-2010.desktop</Filename>
+			<Filename>menulibre-microsoft-powerpoint-2010.desktop</Filename>
+			<Filename>menulibre-icrosoft-word-2010.desktop</Filename>
+			<Filename>WebApp-OneNote4635.desktop</Filename>
+			<Filename>atril.desktop</Filename>
+			<Filename>xfce4-dict.desktop</Filename>
+			<Filename>com.github.IsmaelMartinez.teams_for_linux.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Other</Name>
+		<Directory>X-GNOME-Other.directory</Directory>
+		<DirectoryDir>/home/zawiskrz/.local/share/desktop-directories</DirectoryDir>
+		<Layout>
+			<Merge type="menus" />
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>Development</Name>
+		<Directory>xfce-development.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>epp.package.jee.desktop</Filename>
+			<Filename>pycharm.desktop</Filename>
+			<Filename>python3.13.desktop</Filename>
+			<Filename>rstudio.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>System</Name>
+		<Directory>xfce-system.directory</Directory>
+		<Layout>
+			<Merge type="menus" />
+			<Filename>org.gnome.PackageUpdater.desktop</Filename>
+			<Filename>org.bleachbit.BleachBit.desktop</Filename>
+			<Filename>bleachbit-root.desktop</Filename>
+			<Filename>gigolo.desktop</Filename>
+			<Filename>htop.desktop</Filename>
+			<Filename>gdebi.desktop</Filename>
+			<Filename>thunar.desktop</Filename>
+			<Filename>xfce4-taskmanager.desktop</Filename>
+			<Filename>mc.desktop</Filename>
+			<Filename>PlayOnLinux.desktop</Filename>
+			<Filename>com.playonlinux.PlayOnLinux4.desktop</Filename>
+			<Filename>synaptic.desktop</Filename>
+			<Filename>xfce4-terminal.desktop</Filename>
+			<Filename>timeshift-gtk.desktop</Filename>
+			<Filename>system-config-printer.desktop</Filename>
+			<Filename>debian-uxterm.desktop</Filename>
+			<Filename>xfce4-sensors.desktop</Filename>
+			<Filename>xfce4-session-logout.desktop</Filename>
+			<Filename>debian-xterm.desktop</Filename>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Menu>
+		<Name>wine-wine</Name>
+		<Directory>wine-wine.directory</Directory>
+		<DirectoryDir>/home/zawiskrz/.local/share/desktop-directories</DirectoryDir>
+		<Menu>
+			<Name>wine-Programs</Name>
+			<Directory>wine-Programs.directory</Directory>
+			<DirectoryDir>/home/zawiskrz/.local/share/desktop-directories</DirectoryDir>
+			<Menu>
+				<Name>wine-Programs-e-Kiosk Reader</Name>
+				<Directory>wine-Programs-e-Kiosk Reader.directory</Directory>
+				<DirectoryDir>/home/zawiskrz/.local/share/desktop-directories</DirectoryDir>
+				<Include>
+					<Filename>e-Kiosk Reader.desktop</Filename>
+				</Include>
+				<Include>
+					<Filename>Licencja użytkownika.desktop</Filename>
+				</Include>
+				<Include>
+					<Filename>Moje e-wydania.desktop</Filename>
+				</Include>
+				<Layout>
+					<Merge type="menus" />
+					<Filename>e-Kiosk Reader-e-Kiosk Reader.desktop</Filename>
+					<Filename>e-Kiosk Reader-Licencja użytkownika.desktop</Filename>
+					<Filename>e-Kiosk Reader-Moje e-wydania.desktop</Filename>
+					<Merge type="files" />
+				</Layout>
+			</Menu>
+			<Layout>
+				<Merge type="menus" />
+				<Menuname>wine-Programs-e-Kiosk Reader</Menuname>
+				<Merge type="files" />
+			</Layout>
+		</Menu>
+		<Layout>
+			<Merge type="menus" />
+			<Menuname>wine-Programs</Menuname>
+			<Merge type="files" />
+		</Layout>
+	</Menu>
+	<Layout>
+		<Filename>xfce4-run.desktop</Filename>
+		<Separator />
+		<Filename>xfce4-terminal-emulator.desktop</Filename>
+		<Filename>xfce4-file-manager.desktop</Filename>
+		<Filename>xfce4-mail-reader.desktop</Filename>
+		<Filename>xfce4-web-browser.desktop</Filename>
+		<Separator />
+		<Menuname>Settings</Menuname>
+		<Separator />
+		<Menuname>Accessories</Menuname>
+		<Menuname>Accessories</Menuname>
+		<Menuname>Education</Menuname>
+		<Menuname>Graphics</Menuname>
+		<Menuname>Games</Menuname>
+		<Menuname>Other</Menuname>
+		<Menuname>webapps-webapps</Menuname>
+		<Menuname>Network</Menuname>
+		<Menuname>Multimedia</Menuname>
+		<Menuname>Science</Menuname>
+		<Menuname>Office</Menuname>
+		<Menuname>Other</Menuname>
+		<Menuname>Development</Menuname>
+		<Menuname>System</Menuname>
+		<Menuname>wine-wine</Menuname>
+		<Separator />
+		<Filename>xfce4-about.desktop</Filename>
+		<Filename>xfce4-session-logout.desktop</Filename>
+	</Layout>
+</Menu>

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=EXCEL
+Comment=PlayOnLinux
+Type=Application
+Exec=flatpak run com.playonlinux.PlayOnLinux4 --run "EXCEL" %F
+Icon=/home/zawiskrz/.var/app/com.playonlinux.PlayOnLinux4/data/PlayOnLinux//icones/full_size/EXCEL
+StartupWMClass=EXCEL.EXE
+Categories=
+X-XFCE-Source=file:///home/zawiskrz/Pulpit/EXCEL.desktop

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=WORD
+Comment=PlayOnLinux
+Type=Application
+Exec=flatpak run com.playonlinux.PlayOnLinux4 --run "WORD" %F
+Icon=/home/zawiskrz/.var/app/com.playonlinux.PlayOnLinux4/data/PlayOnLinux//icones/full_size/WORD
+StartupWMClass=WINWORD.EXE
+Categories=
+X-XFCE-Source=file:///home/zawiskrz/Pulpit/WORD.desktop

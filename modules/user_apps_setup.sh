@@ -5,7 +5,7 @@ install_user_apps() {
     menulibre thunderbird vlc calibre rhythmbox shotwell \
     libreoffice-l10n-pl libreoffice-help-pl \
     wxmaxima python3 python3-pip python3-venv \
-    mc htop wget curl \
+    mc htop wget curl gnome-boxes \
     remmina filezilla transmission 2>&1 | tee -a "$LOGFILE"
 }
 

@@ -8,10 +8,11 @@
         <property name="color1" type="empty"/>
         <property name="color2" type="empty"/>
         <property name="color-style" type="empty"/>
-        <property name="image-path" type="empty"/>
+        <property name="image-path" type="string" value="/home/zawiskrz/Obrazy/20250826_134326.jpg"/>
         <property name="image-show" type="empty"/>
         <property name="last-image" type="empty"/>
         <property name="last-single-image" type="empty"/>
+        <property name="image-style" type="int" value="5"/>
       </property>
       <property name="monitor1" type="empty">
         <property name="brightness" type="empty"/>
@@ -28,11 +29,25 @@
           <property name="last-image" type="string" value="/home/zawiskrz/tapety/planety.jpg"/>
         </property>
       </property>
+      <property name="monitorDP-2-1" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="last-image" type="string" value="/home/zawiskrz/Obrazy/20250826_134326.jpg"/>
+          <property name="image-style" type="int" value="5"/>
+        </property>
+      </property>
+      <property name="monitoreDP-1" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="last-image" type="string" value="/home/zawiskrz/tapety/planety.jpg"/>
+        </property>
+      </property>
     </property>
   </property>
   <property name="last-settings-migration-version" type="uint" value="1"/>
   <property name="last" type="empty">
     <property name="window-width" type="int" value="698"/>
     <property name="window-height" type="int" value="547"/>
+  </property>
+  <property name="desktop-icons" type="empty">
+    <property name="icon-size" type="uint" value="38"/>
   </property>
 </channel>

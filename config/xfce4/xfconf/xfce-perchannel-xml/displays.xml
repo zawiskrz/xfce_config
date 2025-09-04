@@ -4,18 +4,33 @@
   <property name="ActiveProfile" type="string" value="Default"/>
   <property name="Notify" type="int" value="1"/>
   <property name="AutoEnableProfiles" type="int" value="3"/>
+  <property name="IdentityPopups" type="bool" value="false"/>
   <property name="Default" type="empty">
-    <property name="Virtual-1" type="string" value="Red Hat, Inc. 15&quot;">
+    <property name="eDP-1" type="string" value="Laptop">
       <property name="Active" type="bool" value="true"/>
-      <property name="EDID" type="string" value="19821ae4de9e0d3dc994c8dcce178ba0471d41de"/>
-      <property name="Resolution" type="string" value="1920x1080"/>
-      <property name="RefreshRate" type="double" value="60"/>
+      <property name="EDID" type="string" value="52a80a691fd4b807338fe1c2ff7de8225f3df168"/>
+      <property name="Resolution" type="string" value="1366x768"/>
+      <property name="RefreshRate" type="double" value="59.988992845349479"/>
       <property name="Rotation" type="int" value="0"/>
       <property name="Reflection" type="string" value="0"/>
       <property name="Primary" type="bool" value="false"/>
       <property name="Scale" type="double" value="1"/>
       <property name="Position" type="empty">
         <property name="X" type="int" value="0"/>
+        <property name="Y" type="int" value="0"/>
+      </property>
+    </property>
+    <property name="DP-2-1" type="string" value="Lenovo 22&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="2a5cf417263ed65981dc8541261b92f6eac65d91"/>
+      <property name="Resolution" type="string" value="1920x1080"/>
+      <property name="RefreshRate" type="double" value="59.933878003184937"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="true"/>
+      <property name="Scale" type="double" value="1"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="1366"/>
         <property name="Y" type="int" value="0"/>
       </property>
     </property>
