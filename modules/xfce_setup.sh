@@ -160,7 +160,8 @@ configure_flatpak() {
           app.ytmdesktop.ytmdesktop \
           com.github.unrud.VideoDownloader \
           io.github.amit9838.mousam \
-          com.ktechpit.whatsie | tee -a "$LOGFILE"
+          com.ktechpit.whatsie \
+          app/com.playonlinux.PlayOnLinux4/x86_64/stable | tee -a "$LOGFILE"
 
   echo "✅ Aplikacje zostały zainstalowane." | tee -a "$LOGFILE"
 
