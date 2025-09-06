@@ -61,7 +61,7 @@ source "$CONFIG_FILE"
 [[ "$EMACS" == "true" ]] && configure_emacs
 [[ "$FIREWALL" == "true" ]] && configure_ufw
 [[ "$GRUB_SILENT" == "true" ]] && configure_silent_boot
-[[ "$LID_POWER_OFF" == "true" ]] && configure_lid_power
+[[ "$LID_POWER_OFF" == "true" ]] && configure_lid_poweroff
 [[ "$COMPIZ" == "true" ]] && setup_compiz_for_xfce
 [[ "$DOCKER" == "true" ]] && configure_docker
 
