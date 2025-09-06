@@ -25,6 +25,7 @@ FILES_TO_SOURCE=(
   "./modules/compiz_setup.sh"
   "./modules/user_apps_setup.sh"
   "./modules/grub_setup.sh"
+  "./modules/lid_power_setup.sh"
 )
 
 for file in "${FILES_TO_SOURCE[@]}"; do
