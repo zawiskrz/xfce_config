@@ -24,6 +24,7 @@ FILES_TO_SOURCE=(
   "./modules/docker_setup.sh"
   "./modules/compiz_setup.sh"
   "./modules/user_apps_setup.sh"
+  "./modules/grub_setup.sh"
 )
 
 for file in "${FILES_TO_SOURCE[@]}"; do

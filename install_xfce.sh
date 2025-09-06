@@ -21,7 +21,8 @@ options=(
   9 "[SYSTEM] NVIDIA" off
   10 "[SYSTEM] CUDA Toolkit" off
   11 "[SYSTEM] COMPIZ" off
-  12 "Restart X11" off
+  12 "[SYSTEM] SILENT GRUB" off
+  13 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -41,7 +42,8 @@ for choice in $choices; do
     9) echo "NVIDIA=true" >> "$CONFIG_FILE" ;;
     10) echo "CUDA=true" >> "$CONFIG_FILE" ;;
     11) echo "COMPIZ=true" >> "$CONFIG_FILE" ;;
-    12) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
+    12) echo "GRUB_SILENT=true" >> "$CONFIG_FILE" ;;
+    13) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -56,6 +58,7 @@ source "$CONFIG_FILE"
 [[ "$RSTUDIO" == "true" ]] && configure_rstudio
 [[ "$EMACS" == "true" ]] && configure_emacs
 [[ "$FIREWALL" == "true" ]] && configure_ufw
+[[ "$GRUB_SILENT" == "true" ]] && configure_silent_boot
 [[ "$COMPIZ" == "true" ]] && setup_compiz_for_xfce
 [[ "$DOCKER" == "true" ]] && configure_docker
 
