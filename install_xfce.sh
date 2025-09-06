@@ -20,10 +20,11 @@ options=(
   8 "[SYSTEM] Docker" off
   9 "[SYSTEM] NVIDIA" off
   10 "[SYSTEM] CUDA Toolkit" off
-  11 "[SYSTEM] COMPIZ" off
-  12 "[SYSTEM] SILENT GRUB" off
-  13 "[SYSTEM] Ustawienie Power OFF dla pokrywy" off
-  14 "Restart X11" off
+  11 "[SYSTEM] INTEL GPU" off
+  12 "[SYSTEM] COMPIZ" off
+  13 "[SYSTEM] SILENT GRUB" off
+  14 "[SYSTEM] Ustawienie Power OFF dla pokrywy" off
+  15 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -42,10 +43,11 @@ for choice in $choices; do
     8) echo "DOCKER=true" >> "$CONFIG_FILE" ;;
     9) echo "NVIDIA=true" >> "$CONFIG_FILE" ;;
     10) echo "CUDA=true" >> "$CONFIG_FILE" ;;
-    11) echo "COMPIZ=true" >> "$CONFIG_FILE" ;;
-    12) echo "GRUB_SILENT=true" >> "$CONFIG_FILE" ;;
-    13) echo "LID_POWER_OFF=true" >> "$CONFIG_FILE" ;;
-    14) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
+    11) echo "INTELGPU=true" >> "$CONFIG_FILE" ;;
+    12) echo "COMPIZ=true" >> "$CONFIG_FILE" ;;
+    13) echo "GRUB_SILENT=true" >> "$CONFIG_FILE" ;;
+    14) echo "LID_POWER_OFF=true" >> "$CONFIG_FILE" ;;
+    15) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -56,6 +58,7 @@ source "$CONFIG_FILE"
 [[ "$USERAPPS" == "true" ]] && configure_user_apps
 [[ "$NVIDIA" == "true" ]] && configure_nvidia
 [[ "$CUDA" == "true" ]] && configure_cuda
+[[ "$INTELGPU" == "true" ]] && configure_intel_gpu_support
 [[ "$PYCHARM" == "true" ]] && configure_pycharm
 [[ "$RSTUDIO" == "true" ]] && configure_rstudio
 [[ "$EMACS" == "true" ]] && configure_emacs
