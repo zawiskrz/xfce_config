@@ -7,7 +7,8 @@ configure_pycharm(){
   sudo mv pycharm-${PYCHARM_VERSION} "$PYCHARM_DIR"
   cat <<EOF | sudo tee /usr/share/applications/pycharm.desktop
 [Desktop Entry]
-Name=PyCharm Community
+Name=PyCharm IDE
+Comment=Python IDE for Professional Developers
 Exec=${PYCHARM_DIR}/bin/pycharm
 Icon=${PYCHARM_DIR}/bin/pycharm.png
 Type=Application
