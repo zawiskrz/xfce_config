@@ -1,9 +1,10 @@
 #!/bin/bash
 
 configure_lid_poweroff() {
+configure_lid_display_behavior() {
     echo "🔧 Konfiguruję zachowanie ekranów w zależności od stanu pokrywy..."
 
-    # 1. Modyfikacja logind.conf – ignorujemy zamknięcie pokrywy
+    # 1. Ignorowanie zamknięcia pokrywy w systemd-logind
     local config_file="/etc/systemd/logind.conf"
     local backup_file="/etc/systemd/logind.conf.bak"
 
@@ -19,7 +20,7 @@ configure_lid_poweroff() {
     echo "🔄 Restartuję systemd-logind..."
     sudo systemctl restart systemd-logind
 
-    # 2. Instalacja acpid (jeśli nie ma)
+    # 2. Instalacja i uruchomienie acpid
     echo "📦 Instaluję acpid..."
     sudo apt install -y acpid
     sudo systemctl enable acpid
@@ -31,30 +32,24 @@ configure_lid_poweroff() {
     sudo tee "$script_path" > /dev/null <<EOF
 #!/bin/bash
 
-# Ustaw zmienne środowiskowe dla sesji graficznej
 export DISPLAY=:0
 export XAUTHORITY="/home/$user_name/.Xauthority"
 
-# Pobierz stan pokrywy
 LID_STATE=\$(cat /proc/acpi/button/lid/LID*/state | awk '{print \$2}')
-
-# Wykryj nazwę ekranu laptopa i zewnętrznego monitora
 LAPTOP=\$(xrandr --query | grep " connected" | grep -E "eDP|LVDS" | awk '{print \$1}')
 EXTERNAL=\$(xrandr --query | grep " connected" | grep -vE "eDP|LVDS" | awk '{print \$1}')
 
-# Sprawdź, czy oba ekrany są wykryte
 if [ -z "\$LAPTOP" ] || [ -z "\$EXTERNAL" ]; then
     echo "❌ Nie wykryto ekranów. Przerywam."
     exit 1
 fi
 
-# Przełączanie ekranów w zależności od stanu pokrywy
 if [ "\$LID_STATE" = "closed" ]; then
-    echo "🔒 Pokrywa zamknięta – wyłączam ekran laptopa"
-    xrandr --output "\$LAPTOP" --off --output "\$EXTERNAL" --auto
+    echo "🔒 Pokrywa zamknięta – używam tylko zewnętrznego monitora"
+    xrandr --output "\$LAPTOP" --off --output "\$EXTERNAL" --auto --primary
 else
-    echo "📖 Pokrywa otwarta – włączam oba ekrany"
-    xrandr --output "\$LAPTOP" --auto --output "\$EXTERNAL" --auto
+    echo "📖 Pokrywa otwarta – aktywuję oba ekrany niezależnie"
+    xrandr --output "\$LAPTOP" --auto --primary --output "\$EXTERNAL" --auto --right-of "\$LAPTOP"
 fi
 EOF
 
@@ -70,5 +65,5 @@ EOF
     echo "🔄 Restartuję acpid, aby załadować nową regułę..."
     sudo systemctl restart acpid
 
-    echo "✅ Gotowe! System będzie dynamicznie przełączał ekrany w zależności od stanu pokrywy laptopa."
+    echo "✅ Gotowe! Ekrany będą przełączane dynamicznie w zależności od stanu pokrywy laptopa."
 }
