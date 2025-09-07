@@ -24,7 +24,8 @@ options=(
   12 "[SYSTEM] COMPIZ" off
   13 "[SYSTEM] SILENT GRUB" off
   14 "[SYSTEM] Ustawienie Power OFF dla pokrywy" off
-  15 "Restart X11" off
+  15 "[SYSTEM] Printers" off
+  16 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -47,7 +48,8 @@ for choice in $choices; do
     12) echo "COMPIZ=true" >> "$CONFIG_FILE" ;;
     13) echo "GRUB_SILENT=true" >> "$CONFIG_FILE" ;;
     14) echo "LID_POWER_OFF=true" >> "$CONFIG_FILE" ;;
-    15) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
+    15) echo "PRINTERS=true" >> "$CONFIG_FILE" ;;
+    16) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -65,6 +67,7 @@ source "$CONFIG_FILE"
 [[ "$FIREWALL" == "true" ]] && configure_ufw
 [[ "$GRUB_SILENT" == "true" ]] && configure_silent_boot
 [[ "$LID_POWER_OFF" == "true" ]] && configure_lid_poweroff
+[[ "$PRINTERS" == "true" ]] && install_printer_support
 [[ "$COMPIZ" == "true" ]] && setup_compiz_for_xfce
 [[ "$DOCKER" == "true" ]] && configure_docker
 
