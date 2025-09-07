@@ -54,15 +54,34 @@ EOF
 
     sudo chmod +x "$script_path"
 
-    # 4. Reguła ACPI do wywoływania skryptu przy zmianie stanu pokrywy
+    # 4. Reguła ACPI do dynamicznego przełączania ekranów
     local acpi_event_file="/etc/acpi/events/lid-monitor"
     sudo tee "$acpi_event_file" > /dev/null <<EOF
 event=button/lid.*
 action=su -l $user_name -c "$script_path"
 EOF
 
-    echo "🔄 Restartuję acpid, aby załadować nową regułę..."
     sudo systemctl restart acpid
 
-    echo "✅ Gotowe! Zewnętrzny monitor będzie teraz ekranem głównym, niezależnie od stanu pokrywy."
+    # 5. Jednostka systemd uruchamiana po starcie środowiska graficznego
+    local service_file="/etc/systemd/system/lid-monitor-start.service"
+    sudo tee "$service_file" > /dev/null <<EOF
+[Unit]
+Description=Przełącza ekrany po starcie systemu w zależności od stanu pokrywy
+After=graphical.target
+
+[Service]
+ExecStart=$script_path
+User=$user_name
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/$user_name/.Xauthority
+Type=oneshot
+
+[Install]
+WantedBy=graphical.target
+EOF
+
+    sudo systemctl enable lid-monitor-start.service
+
+    echo "✅ Gotowe! Ekrany będą ustawiane zgodnie ze stanem pokrywy — zarówno przy starcie systemu, jak i w czasie jego działania."
 }
