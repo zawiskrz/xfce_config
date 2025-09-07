@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# 🔍 Funkcja dodająca linię, jeśli jej nie ma
+add_if_missing() {
+    local line="$1"
+    if grep -qxF "$line" "$BASHRC"; then
+        echo "⏭️ Pomijam: '$line' już istnieje." | tee -a "$LOGFILE"
+    else
+        echo "$line" >> "$BASHRC"
+        echo "✅ Dodano: $line" | tee -a "$LOGFILE"
+    fi
+}
+
+
 configure_intel_gpu_support(){
   echo "🎮 Konfiguracja wsparcia GPU (VAAPI, Vulkan, OpenCL)..." | tee -a "$LOGFILE"
 
@@ -53,14 +65,18 @@ EOF
   vulkaninfo | tee -a "$LOGFILE"
 
    echo "🎛️ Dodanie wpisów do .bashrc ..." | tee -a "$LOGFILE"
-  cat <<EOF >> /home/$(logname)/.bashrc
-alias chrome-gpu='LIBVA_DRIVER_NAME=i965 google-chrome --use-gl=desktop --enable-zero-copy --ignore-gpu-blocklist --enable-gpu-rasterization --enable-native-gpu-memory-buffers --enable-features=VaapiVideoDecoder --ozone-platform=x11'
-export MOZ_ENABLE_WAYLAND=0
-export MOZ_WEBRENDER=1
-export MOZ_ACCELERATED=1
-export LIBVA_DRIVER_NAME=i965
-EOF
-
-
+  BASHRC="/home/$(logname)/.bashrc"
+  # 📦 Sprawdź, czy plik .bashrc istnieje
+  if [ ! -f "$BASHRC" ]; then
+      echo "📄 Plik .bashrc nie istnieje. Tworzę nowy..." | tee -a "$LOGFILE"
+      touch "$BASHRC"
+  fi
+  # 🚀 Dodaj alias i zmienne środowiskowe
+  add_if_missing "alias chrome-gpu='LIBVA_DRIVER_NAME=i965 google-chrome --use-gl=desktop --enable-zero-copy --ignore-gpu-blocklist --enable-gpu-rasterization --enable-native-gpu-memory-buffers --enable-features=VaapiVideoDecoder --ozone-platform=x11'"
+  add_if_missing "export MOZ_ENABLE_WAYLAND=0"
+  add_if_missing "export MOZ_WEBRENDER=1"
+  add_if_missing "export MOZ_ACCELERATED=1"
+  add_if_missing "export LIBVA_DRIVER_NAME=i965"
+  add_if_missing "export VDPAU_DRIVER=i965"
   echo "✅ Konfiguracja GPU zakończona pomyślnie." | tee -a "$LOGFILE"
 }
