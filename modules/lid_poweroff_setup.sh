@@ -13,7 +13,7 @@ configure_lid_poweroff() {
     echo "📝 Ustawiam zachowanie pokrywy w zależności od zasilania"
     sudo sed -i '/^HandleLidSwitch=/d' "$config_file"
     sudo sed -i '/^HandleLidSwitchExternalPower=/d' "$config_file"
-    echo "HandleLidSwitch=poweroff" | sudo tee -a "$config_file" > /dev/null
+    echo "HandleLidSwitch=ignore" | sudo tee -a "$config_file" > /dev/null
     echo "HandleLidSwitchExternalPower=ignore" | sudo tee -a "$config_file" > /dev/null
 
     echo "🔄 Restartuję systemd-logind..."
@@ -25,7 +25,7 @@ configure_lid_poweroff() {
     sudo systemctl enable acpid
     sudo systemctl start acpid
 
-    # 3. Skrypt do przełączania ekranów
+    # 3. Skrypt do przełączania ekranów lub wyłączania systemu
     local script_path="/usr/local/bin/lid-monitor-switch.sh"
     local user_name=$(logname)
     sudo tee "$script_path" > /dev/null <<EOF
@@ -35,26 +35,32 @@ export DISPLAY=:0
 export XAUTHORITY="/home/$user_name/.Xauthority"
 
 LID_STATE=\$(cat /proc/acpi/button/lid/LID*/state | awk '{print \$2}')
+POWER_STATE=\$(cat /sys/class/power_supply/AC/online)
+
 LAPTOP=\$(xrandr --query | grep " connected" | grep -E "eDP|LVDS" | awk '{print \$1}')
 EXTERNAL=\$(xrandr --query | grep " connected" | grep -vE "eDP|LVDS" | awk '{print \$1}')
 
-if [ -z "\$LAPTOP" ] || [ -z "\$EXTERNAL" ]; then
-    echo "❌ Nie wykryto ekranów. Przerywam."
-    exit 1
-fi
-
 if [ "\$LID_STATE" = "closed" ]; then
-    echo "🔒 Pokrywa zamknięta – ekran laptopa wyłączony, zewnętrzny aktywny"
-    xrandr --output "\$LAPTOP" --off --output "\$EXTERNAL" --auto --primary
+    if [ "\$POWER_STATE" = "0" ]; then
+        echo "🔋 Pokrywa zamknięta na baterii – wyłączam system"
+        systemctl poweroff
+    else
+        echo "🔌 Pokrywa zamknięta na zasilaniu – przełączam na zewnętrzny monitor"
+        if [ -n "\$LAPTOP" ] && [ -n "\$EXTERNAL" ]; then
+            xrandr --output "\$LAPTOP" --off --output "\$EXTERNAL" --auto --primary
+        fi
+    fi
 else
     echo "📖 Pokrywa otwarta – oba ekrany aktywne, zewnętrzny jako główny"
-    xrandr --output "\$EXTERNAL" --auto --primary --output "\$LAPTOP" --auto --left-of "\$EXTERNAL"
+    if [ -n "\$LAPTOP" ] && [ -n "\$EXTERNAL" ]; then
+        xrandr --output "\$EXTERNAL" --auto --primary --output "\$LAPTOP" --auto --left-of "\$EXTERNAL"
+    fi
 fi
 EOF
 
     sudo chmod +x "$script_path"
 
-    # 4. Reguła ACPI – dynamiczne przełączanie ekranów
+    # 4. Reguła ACPI – uruchamia skrypt przy zmianie stanu pokrywy
     local acpi_event_file="/etc/acpi/events/lid-monitor"
     sudo tee "$acpi_event_file" > /dev/null <<EOF
 event=button/lid.*
