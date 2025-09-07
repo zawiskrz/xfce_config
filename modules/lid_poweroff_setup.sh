@@ -1,7 +1,6 @@
 #!/bin/bash
 
 configure_lid_poweroff() {
-configure_lid_display_behavior() {
     echo "🔧 Konfiguruję zachowanie ekranów w zależności od stanu pokrywy..."
 
     # 1. Ignorowanie zamknięcia pokrywy w systemd-logind
