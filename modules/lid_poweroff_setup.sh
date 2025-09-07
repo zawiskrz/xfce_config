@@ -1,25 +1,25 @@
 #!/bin/bash
 
 configure_lid_poweroff() {
-    echo "🔧 Konfiguruję zachowanie ekranów w zależności od stanu pokrywy..."
+    echo "🔧 Konfiguruję zachowanie ekranów i pokrywy laptopa..."
 
-    # 1. Ignorowanie zamknięcia pokrywy w systemd-logind
+    # 1. Konfiguracja systemd-logind
     local config_file="/etc/systemd/logind.conf"
     local backup_file="/etc/systemd/logind.conf.bak"
 
     echo "📁 Tworzę kopię zapasową: $backup_file"
     sudo cp "$config_file" "$backup_file"
 
-    echo "📝 Ustawiam HandleLidSwitch=ignore"
+    echo "📝 Ustawiam zachowanie pokrywy w zależności od zasilania"
     sudo sed -i '/^HandleLidSwitch=/d' "$config_file"
     sudo sed -i '/^HandleLidSwitchExternalPower=/d' "$config_file"
-    echo "HandleLidSwitch=ignore" | sudo tee -a "$config_file" > /dev/null
+    echo "HandleLidSwitch=poweroff" | sudo tee -a "$config_file" > /dev/null
     echo "HandleLidSwitchExternalPower=ignore" | sudo tee -a "$config_file" > /dev/null
 
     echo "🔄 Restartuję systemd-logind..."
     sudo systemctl restart systemd-logind
 
-    # 2. Instalacja i uruchomienie acpid
+    # 2. Instalacja acpid
     echo "📦 Instaluję acpid..."
     sudo apt install -y acpid
     sudo systemctl enable acpid
@@ -44,17 +44,17 @@ if [ -z "\$LAPTOP" ] || [ -z "\$EXTERNAL" ]; then
 fi
 
 if [ "\$LID_STATE" = "closed" ]; then
-    echo "🔒 Pokrywa zamknięta – używam tylko zewnętrznego monitora jako głównego"
+    echo "🔒 Pokrywa zamknięta – ekran laptopa wyłączony, zewnętrzny aktywny"
     xrandr --output "\$LAPTOP" --off --output "\$EXTERNAL" --auto --primary
 else
-    echo "📖 Pokrywa otwarta – zewnętrzny monitor jako główny, laptop jako dodatkowy"
+    echo "📖 Pokrywa otwarta – oba ekrany aktywne, zewnętrzny jako główny"
     xrandr --output "\$EXTERNAL" --auto --primary --output "\$LAPTOP" --auto --left-of "\$EXTERNAL"
 fi
 EOF
 
     sudo chmod +x "$script_path"
 
-    # 4. Reguła ACPI do dynamicznego przełączania ekranów
+    # 4. Reguła ACPI – dynamiczne przełączanie ekranów
     local acpi_event_file="/etc/acpi/events/lid-monitor"
     sudo tee "$acpi_event_file" > /dev/null <<EOF
 event=button/lid.*
@@ -63,25 +63,23 @@ EOF
 
     sudo systemctl restart acpid
 
-    # 5. Jednostka systemd uruchamiana po starcie środowiska graficznego
-    local service_file="/etc/systemd/system/lid-monitor-start.service"
-    sudo tee "$service_file" > /dev/null <<EOF
-[Unit]
-Description=Przełącza ekrany po starcie systemu w zależności od stanu pokrywy
-After=graphical.target
+    # 5. Autostart w XFCE – uruchomienie skryptu po zalogowaniu
+    local autostart_dir="/home/$user_name/.config/autostart"
+    local desktop_file="$autostart_dir/lid-monitor.desktop"
+    mkdir -p "$autostart_dir"
 
-[Service]
-ExecStart=$script_path
-User=$user_name
-Environment=DISPLAY=:0
-Environment=XAUTHORITY=/home/$user_name/.Xauthority
-Type=oneshot
-
-[Install]
-WantedBy=graphical.target
+    sudo tee "$desktop_file" > /dev/null <<EOF
+[Desktop Entry]
+Type=Application
+Exec=$script_path
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Monitor Lid Switch
+Comment=Przełącza ekrany po starcie sesji graficznej
 EOF
 
-    sudo systemctl enable lid-monitor-start.service
+    sudo chown "$user_name:$user_name" "$desktop_file"
 
-    echo "✅ Gotowe! Ekrany będą ustawiane zgodnie ze stanem pokrywy — zarówno przy starcie systemu, jak i w czasie jego działania."
+    echo "✅ Gotowe! System wyłączy się na baterii po zamknięciu pokrywy, a na zasilaniu zewnętrznym przełączy ekrany zgodnie z konfiguracją."
 }
