@@ -1,6 +1,7 @@
 #!/bin/bash
 
 configure_lid_poweroff() {
+configure_lid_display_behavior() {
     echo "🔧 Konfiguruję zachowanie ekranów w zależności od stanu pokrywy..."
 
     # 1. Ignorowanie zamknięcia pokrywy w systemd-logind
@@ -44,11 +45,11 @@ if [ -z "\$LAPTOP" ] || [ -z "\$EXTERNAL" ]; then
 fi
 
 if [ "\$LID_STATE" = "closed" ]; then
-    echo "🔒 Pokrywa zamknięta – używam tylko zewnętrznego monitora"
+    echo "🔒 Pokrywa zamknięta – używam tylko zewnętrznego monitora jako głównego"
     xrandr --output "\$LAPTOP" --off --output "\$EXTERNAL" --auto --primary
 else
-    echo "📖 Pokrywa otwarta – aktywuję oba ekrany niezależnie"
-    xrandr --output "\$LAPTOP" --auto --primary --output "\$EXTERNAL" --auto --right-of "\$LAPTOP"
+    echo "📖 Pokrywa otwarta – zewnętrzny monitor jako główny, laptop jako dodatkowy"
+    xrandr --output "\$EXTERNAL" --auto --primary --output "\$LAPTOP" --auto --left-of "\$EXTERNAL"
 fi
 EOF
 
@@ -64,5 +65,5 @@ EOF
     echo "🔄 Restartuję acpid, aby załadować nową regułę..."
     sudo systemctl restart acpid
 
-    echo "✅ Gotowe! Ekrany będą przełączane dynamicznie w zależności od stanu pokrywy laptopa."
+    echo "✅ Gotowe! Zewnętrzny monitor będzie teraz ekranem głównym, niezależnie od stanu pokrywy."
 }
