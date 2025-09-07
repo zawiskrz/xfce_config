@@ -27,36 +27,34 @@ configure_lid_poweroff() {
 
     # 3. Skrypt do przełączania ekranów
     local script_path="/usr/local/bin/lid-monitor-switch.sh"
-    sudo tee "$script_path" > /dev/null <<'EOF'
+    local user_name=$(logname)
+    sudo tee "$script_path" > /dev/null <<EOF
 #!/bin/bash
 
-# Pobierz nazwę aktywnego użytkownika
-USER=$(logname)
-
 # Ustaw zmienne środowiskowe dla sesji graficznej
-export DISPLAY=$(pgrep -a X | grep "$USER" | awk '{print $NF}')
-export XAUTHORITY="/home/$USER/.Xauthority"
+export DISPLAY=:0
+export XAUTHORITY="/home/$user_name/.Xauthority"
 
 # Pobierz stan pokrywy
-LID_STATE=$(cat /proc/acpi/button/lid/LID*/state | awk '{print $2}')
+LID_STATE=\$(cat /proc/acpi/button/lid/LID*/state | awk '{print \$2}')
 
 # Wykryj nazwę ekranu laptopa i zewnętrznego monitora
-LAPTOP=$(xrandr | grep " connected" | grep -E "eDP|LVDS" | awk '{print $1}')
-EXTERNAL=$(xrandr | grep " connected" | grep -vE "eDP|LVDS" | awk '{print $1}')
+LAPTOP=\$(xrandr --query | grep " connected" | grep -E "eDP|LVDS" | awk '{print \$1}')
+EXTERNAL=\$(xrandr --query | grep " connected" | grep -vE "eDP|LVDS" | awk '{print \$1}')
 
 # Sprawdź, czy oba ekrany są wykryte
-if [ -z "$LAPTOP" ] || [ -z "$EXTERNAL" ]; then
+if [ -z "\$LAPTOP" ] || [ -z "\$EXTERNAL" ]; then
     echo "❌ Nie wykryto ekranów. Przerywam."
     exit 1
 fi
 
 # Przełączanie ekranów w zależności od stanu pokrywy
-if [ "$LID_STATE" = "closed" ]; then
+if [ "\$LID_STATE" = "closed" ]; then
     echo "🔒 Pokrywa zamknięta – wyłączam ekran laptopa"
-    xrandr --output "$LAPTOP" --off --output "$EXTERNAL" --auto
+    xrandr --output "\$LAPTOP" --off --output "\$EXTERNAL" --auto
 else
     echo "📖 Pokrywa otwarta – włączam oba ekrany"
-    xrandr --output "$LAPTOP" --auto --output "$EXTERNAL" --auto
+    xrandr --output "\$LAPTOP" --auto --output "\$EXTERNAL" --auto
 fi
 EOF
 
@@ -66,7 +64,7 @@ EOF
     local acpi_event_file="/etc/acpi/events/lid-monitor"
     sudo tee "$acpi_event_file" > /dev/null <<EOF
 event=button/lid.*
-action=su -l $(logname) -c "$script_path"
+action=su -l $user_name -c "$script_path"
 EOF
 
     echo "🔄 Restartuję acpid, aby załadować nową regułę..."
