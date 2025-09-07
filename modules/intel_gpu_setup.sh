@@ -52,5 +52,15 @@ EOF
   echo "🧪 Weryfikacja Vulkan:" | tee -a "$LOGFILE"
   vulkaninfo | tee -a "$LOGFILE"
 
+   echo "🎛️ Dodanie wpisów do .bashrc ..." | tee -a "$LOGFILE"
+  cat <<EOF >> /home/$(logname)/.bashrc
+alias chrome-gpu='LIBVA_DRIVER_NAME=i965 google-chrome --use-gl=desktop --enable-zero-copy --ignore-gpu-blocklist --enable-gpu-rasterization --enable-native-gpu-memory-buffers --enable-features=VaapiVideoDecoder --ozone-platform=x11'
+export MOZ_ENABLE_WAYLAND=0
+export MOZ_WEBRENDER=1
+export MOZ_ACCELERATED=1
+export LIBVA_DRIVER_NAME=i965
+EOF
+
+
   echo "✅ Konfiguracja GPU zakończona pomyślnie." | tee -a "$LOGFILE"
 }
