@@ -26,6 +26,8 @@ FILES_TO_SOURCE=(
   "./modules/lid_poweroff_setup.sh"
   "./modules/intel_gpu_setup.sh"
   "./modules/printers_setup.sh"
+  "./modules/bluetooth_setup.sh"
+  "./modules/pulse_audio_setup.sh"
 )
 
 for file in "${FILES_TO_SOURCE[@]}"; do

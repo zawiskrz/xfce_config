@@ -6,7 +6,6 @@ install_environment_packages() {
   sudo apt install -y  \
     task-xfce-desktop task-polish-desktop \
     synaptic package-update-indicator \
-    bluez blueman pulseaudio-module-bluetooth rfkill \
     openssh-server ufw gufw papirus-icon-theme \
     gdebi-core unattended-upgrades apt-listchanges \
     mintstick timeshift redshift redshift-gtk powermgmt-base \
@@ -25,27 +24,6 @@ remove_unwanted() {
   sudo apt remove -y --auto-remove parole ristretto mousepad quodlibethom
 }
 
-configure_bluetooth() {
-  echo "🔵 Konfiguracja Bluetooth..." | tee -a "$LOGFILE"
-  sudo systemctl enable bluetooth
-  sudo systemctl start bluetooth
-  sudo rfkill unblock bluetooth
-}
-
-setup_pulseaudio_autostart() {
-  echo "🔊 Autostart PulseAudio..." | tee -a "$LOGFILE"
-  sudo mkdir -p /etc/xdg/autostart
-  sudo tee /etc/xdg/autostart/pulseaudio.desktop > /dev/null <<EOF
-[Desktop Entry]
-Type=Application
-Exec=pulseaudio --start
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-Name=PulseAudio
-Comment=Start PulseAudio sound server
-EOF
-}
 
 configure_locale_and_keyboard() {
   echo "🌍 Konfiguracja języka i klawiatury..." | tee -a "$LOGFILE"
@@ -171,8 +149,6 @@ configure_flatpak() {
 configure_xfce() {
   install_environment_packages
   remove_unwanted
-  configure_bluetooth
-  setup_pulseaudio_autostart
   configure_locale_and_keyboard
   copy_user_config
   setup_unattended_upgrades

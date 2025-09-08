@@ -9,8 +9,8 @@ configure_pycharm(){
 [Desktop Entry]
 Name=PyCharm IDE
 Comment=Python IDE for Professional Developers
-Exec=${PYCHARM_DIR}/bin/pycharm
-Icon=${PYCHARM_DIR}/bin/pycharm.png
+Exec=/opt/pycharm/bin/pycharm
+Icon=/opt/pycharm/bin/pycharm.png
 Type=Application
 Categories=Development;IDE;
 EOF

@@ -8,7 +8,7 @@ echo "📦 Instalacja narzędzi interaktywnych..." | tee -a "$LOGFILE"
 sudo apt install -y dialog 2>&1 | tee -a "$LOGFILE"
 
 # Interaktywne menu
-cmd=(dialog --separate-output --checklist "Wybierz komponenty do instalacji:" 22 76 16)
+cmd=(dialog --separate-output --checklist "Wybierz komponenty do instalacji:" 30 76 20)
 options=(
   1 "XFCE" on
   2 "USER APPLICATIONS" on
@@ -23,9 +23,11 @@ options=(
   11 "[SYSTEM] INTEL GPU" off
   12 "[SYSTEM] COMPIZ" off
   13 "[SYSTEM] SILENT GRUB" off
-  14 "[SYSTEM] Ustawienie Power OFF dla pokrywy" off
-  15 "[SYSTEM] Printers" off
-  16 "Restart X11" off
+  14 "[SYSTEM] Ustawienie Power OFF dla pokrywy" on
+  15 "[SYSTEM] Printers" on
+  16 "[SYSTEM] Bluetooth" on
+  17 "[SYSTEM] PulseAudio" on
+  18 "Restart X11" off
 )
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -49,7 +51,9 @@ for choice in $choices; do
     13) echo "GRUB_SILENT=true" >> "$CONFIG_FILE" ;;
     14) echo "LID_POWER_OFF=true" >> "$CONFIG_FILE" ;;
     15) echo "PRINTERS=true" >> "$CONFIG_FILE" ;;
-    16) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
+    16) echo "BLUETOOTH=true" >> "$CONFIG_FILE" ;;
+    17) echo "PULSE_AUDIO=true" >> "$CONFIG_FILE" ;;
+    18) echo "lIGHTDM=true" >> "$CONFIG_FILE" ;;
   esac
 done
 
@@ -61,6 +65,8 @@ source "$CONFIG_FILE"
 [[ "$NVIDIA" == "true" ]] && configure_nvidia
 [[ "$CUDA" == "true" ]] && configure_cuda
 [[ "$INTELGPU" == "true" ]] && configure_intel_gpu_support
+[[ "$BLUETOOTH" == "true" ]] && configure_bluetooth
+[[ "$PULSE_AUDIO" == "true" ]] && configure_pulseaudio
 [[ "$PYCHARM" == "true" ]] && configure_pycharm
 [[ "$RSTUDIO" == "true" ]] && configure_rstudio
 [[ "$EMACS" == "true" ]] && configure_emacs
