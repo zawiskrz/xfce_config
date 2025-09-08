@@ -1,0 +1,24 @@
+[Default Applications]
+x-scheme-handler/ytmd=youtube-music-desktop-app_youtube-music-desktop-app.desktop
+application/vnd.debian.binary-package=snap-store_snap-store.desktop
+application/rtf=calibre-ebook-viewer.desktop
+x-scheme-handler/eclipse+installer=_home_zawiskrz_programy_eclipse-installer_.desktop
+video/vnd.avi=vlc.desktop
+image/jpeg=org.gnome.Shotwell-Viewer.desktop
+inode/directory=xfce4-file-manager.desktop
+x-scheme-handler/trash=xfce4-file-manager.desktop
+x-scheme-handler/http=xfce4-web-browser.desktop
+x-scheme-handler/https=xfce4-web-browser.desktop
+
+[Added Associations]
+application/vnd.debian.binary-package=snap-store_snap-store.desktop;
+x-scheme-handler/sms=org.gnome.Shell.Extensions.GSConnect.desktop;
+x-scheme-handler/tel=org.gnome.Shell.Extensions.GSConnect.desktop;
+application/rtf=org.gnome.Papers.desktop;calibre-ebook-viewer.desktop;
+video/vnd.avi=vlc.desktop;
+image/jpeg=org.gnome.Shotwell-Viewer.desktop;
+inode/directory=xfce4-file-manager.desktop;
+x-scheme-handler/trash=xfce4-file-manager.desktop;
+x-scheme-handler/http=xfce4-web-browser.desktop;
+x-scheme-handler/https=xfce4-web-browser.desktop;
+

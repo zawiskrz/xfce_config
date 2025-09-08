@@ -4,6 +4,13 @@
 configs:
 - level: 1
   monitors:
+  - id: "088732e1879e35e43337dcc9f2dabf479f4d5aa1"
+    display_name: "Samsung Electric Company SAMSUNG (DP-2-1)"
+    geometry:
+      x: 1366
+      y: 0
+      width: 1920
+      height: 1080
   - id: "6c168ca113a2a2021a43ce8f208c3e571869158f"
     display_name: "Lenovo Group Limited LEN LT2223pwC VN-995818 (DP-2-1)"
     geometry:
@@ -12,23 +19,32 @@ configs:
       width: 1920
       height: 1080
   icons:
+    "trash:///":
+      row: 2
+      col: 0
+    "/home/zawiskrz":
+      row: 0
+      col: 0
     "/home/zawiskrz/Pulpit/EXCEL.desktop":
       row: 1
       col: 0
-    "SAMSUNG Android":
-      row: 0
-      col: 0
-      last_seen: 1756894756670301
-    "/home/zawiskrz/Pulpit/POWERPOINT.desktop":
-      row: 0
-      col: 0
     "/home/zawiskrz/Pulpit/WORD.desktop":
       row: 2
+      col: 0
+    "/home/zawiskrz/Pulpit/POWERPOINT.desktop":
+      row: 0
       col: 0
     "smb://mars.local/muzyka/":
       row: 0
       col: 0
       last_seen: 1756960303388528
+    "SAMSUNG Android":
+      row: 3
+      col: 0
+      last_seen: 1757141098015223
+    "/":
+      row: 1
+      col: 0
 - level: 0
   monitors:
   - id: "8467f9feeb39e49373fef3bf63544d0e6415586a"

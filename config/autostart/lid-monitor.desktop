@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/local/bin/lid-monitor-switch.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Monitor Lid Switch
+Comment=Przełącza ekrany po starcie sesji graficznej

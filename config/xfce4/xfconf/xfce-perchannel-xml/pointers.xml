@@ -6,4 +6,9 @@
       <property name="libinput_Tapping_Enabled" type="int" value="1"/>
     </property>
   </property>
+  <property name="Synaptics_TM2722-001" type="empty">
+    <property name="Properties" type="empty">
+      <property name="libinput_Tapping_Enabled" type="int" value="1"/>
+    </property>
+  </property>
 </channel>
