@@ -1,15 +1,26 @@
 #!/bin/bash
 
-# 🔍 Funkcja dodająca linię, jeśli jej nie ma
-add_if_missing() {
+# 🔍 Funkcja dodająca linię do 01-users.conf
+add_if_missing_lightdm_conf_d() {
     local line="$1"
-    if grep -qxF "$line" "$BASHRC"; then
-        echo "⏭️ Pomijam: '$line' już istnieje." | tee -a "$LOGFILE"
+    if grep -qxF "$line" "$CONF_D_FILE"; then
+      echo "⏭️ Pomijam: '$line' już istnieje w $CONF_D_FILE." | tee -a "$LOGFILE"
     else
-        echo "$line" >> "$BASHRC"
-        echo "✅ Dodano: $line" | tee -a "$LOGFILE"
+      echo "$line" | sudo tee -a "$CONF_D_FILE" > /dev/null
+      echo "✅ Dodano: $line" | tee -a "$LOGFILE"
     fi
-}
+  }
+
+# 🔍 Funkcja dodająca linię do lightdm.conf
+add_if_missing_lightdm() {
+    local line="$1"
+    if grep -qxF "$line" "$MAIN_CONF"; then
+      echo "⏭️ Pomijam: '$line' już istnieje w $MAIN_CONF." | tee -a "$LOGFILE"
+    else
+      echo "$line" | sudo tee -a "$MAIN_CONF" > /dev/null
+      echo "✅ Dodano: $line" | tee -a "$LOGFILE"
+    fi
+  }
 
 configure_lightdm_greeter() {
   echo "🔧 Konfiguracja LightDM: greeter i lista użytkowników..." | tee -a "$LOGFILE"
@@ -25,14 +36,16 @@ configure_lightdm_greeter() {
     sudo mkdir -p "$CONF_D_DIR"
   fi
 
-  # 📝 Dodaj wpisy do 01-users.conf
-  echo "📝 Konfiguracja: $CONF_D_FILE" | tee -a "$LOGFILE"
-  sudo tee "$CONF_D_FILE" > /dev/null <<EOF
-[Seat:*]
-greeter-hide-users=false
-greeter-show-manual-login=true
-EOF
-  echo "✅ Zapisano konfigurację w $CONF_D_FILE" | tee -a "$LOGFILE"
+  # 📄 Utwórz plik 01-users.conf jeśli nie istnieje
+  if [ ! -f "$CONF_D_FILE" ]; then
+    echo "📄 Tworzę plik: $CONF_D_FILE" | tee -a "$LOGFILE"
+    sudo touch "$CONF_D_FILE"
+  fi
+
+  # 🚀 Dodaj wpisy do 01-users.conf
+  add_if_missing_lightdm_conf_d "[Seat:*]"
+  add_if_missing_lightdm_conf_d "greeter-hide-users=false"
+  add_if_missing_lightdm_conf_d "greeter-show-manual-login=true"
 
   # 🔒 Kopia zapasowa głównego pliku
   if [ -f "$MAIN_CONF" ]; then
