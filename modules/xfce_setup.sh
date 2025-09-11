@@ -14,6 +14,7 @@ install_environment_packages() {
     network-manager network-manager-gnome \
     firmware-iwlwifi firmware-realtek firmware-brcm80211 \
     gvfs gvfs-backends gvfs-fuse nautilus \
+    gnome-system-tools mugshot \
     bleachbit p7zip-full file-roller 2>&1 | tee -a "$LOGFILE"
 }
 
