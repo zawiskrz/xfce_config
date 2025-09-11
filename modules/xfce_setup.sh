@@ -1,5 +1,58 @@
 #!/bin/bash
 
+# 🔍 Funkcja dodająca linię, jeśli jej nie ma
+add_if_missing() {
+    local line="$1"
+    if grep -qxF "$line" "$BASHRC"; then
+        echo "⏭️ Pomijam: '$line' już istnieje." | tee -a "$LOGFILE"
+    else
+        echo "$line" >> "$BASHRC"
+        echo "✅ Dodano: $line" | tee -a "$LOGFILE"
+    fi
+}
+
+configure_lightdm_greeter() {
+  echo "🔧 Konfiguracja LightDM: greeter i lista użytkowników..." | tee -a "$LOGFILE"
+
+  CONFIG_DIR="/etc/lightdm"
+  CONF_D_DIR="$CONFIG_DIR/lightdm.conf.d"
+  CONF_D_FILE="$CONF_D_DIR/01-users.conf"
+  MAIN_CONF="$CONFIG_DIR/lightdm.conf"
+
+  # 🔒 Utwórz katalog conf.d jeśli nie istnieje
+  if [ ! -d "$CONF_D_DIR" ]; then
+    echo "📁 Tworzenie katalogu: $CONF_D_DIR" | tee -a "$LOGFILE"
+    sudo mkdir -p "$CONF_D_DIR"
+  fi
+
+  # 📝 Dodaj wpisy do 01-users.conf
+  echo "📝 Konfiguracja: $CONF_D_FILE" | tee -a "$LOGFILE"
+  sudo tee "$CONF_D_FILE" > /dev/null <<EOF
+[Seat:*]
+greeter-hide-users=false
+greeter-show-manual-login=true
+EOF
+  echo "✅ Zapisano konfigurację w $CONF_D_FILE" | tee -a "$LOGFILE"
+
+  # 🔒 Kopia zapasowa głównego pliku
+  if [ -f "$MAIN_CONF" ]; then
+    echo "📦 Tworzenie kopii zapasowej: $MAIN_CONF.bak" | tee -a "$LOGFILE"
+    sudo cp "$MAIN_CONF" "$MAIN_CONF.bak"
+  else
+    echo "📄 Plik $MAIN_CONF nie istnieje. Tworzę nowy..." | tee -a "$LOGFILE"
+    sudo touch "$MAIN_CONF"
+  fi
+
+  # 🚀 Dodaj wpisy do lightdm.conf
+  add_if_missing_lightdm "[Seat:*]"
+  add_if_missing_lightdm "greeter-session=lightdm-gtk-greeter"
+  add_if_missing_lightdm "greeter-hide-users=false"
+  add_if_missing_lightdm "greeter-show-manual-login=true"
+
+  echo "✅ Konfiguracja LightDM zakończona pomyślnie." | tee -a "$LOGFILE"
+}
+
+
 install_environment_packages() {
   echo "🛠️ Instalacja pakietów środowiska systemowego..." | tee -a "$LOGFILE"
   sudo apt update
@@ -153,6 +206,7 @@ configure_xfce() {
   configure_locale_and_keyboard
   copy_user_config
   setup_unattended_upgrades
+  configure_lightdm_greeter
   configure_flatpak
   echo "✅ Konfiguracja XFCE zakończona!" | tee -a "$LOGFILE"
 }
